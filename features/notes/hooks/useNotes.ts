@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
 
-import { getNotes } from "../api/notes.api";
+import {
+  createNote as createNoteApi,
+  getNotes,
+} from "../api/notes.api";
+import { CreateNoteDTO } from "../dto/create-note.dto";
 import { Note } from "../types/note";
 
 export function useNotes() {
   const [notes, setNotes] = useState<Note[]>([]);
   const [loading, setLoading] = useState(true);
+  const [creating, setCreating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   async function loadNotes() {
@@ -27,6 +32,30 @@ export function useNotes() {
     }
   }
 
+  async function createNote(dto: CreateNoteDTO) {
+    try {
+      setCreating(true);
+      setError(null);
+
+      const note = await createNoteApi(dto);
+
+      setNotes((prev) => [note, ...prev]);
+
+      return note;
+    } catch (err) {
+      const message =
+        err instanceof Error
+          ? err.message
+          : "Failed to create note.";
+
+      setError(message);
+
+      throw err;
+    } finally {
+      setCreating(false);
+    }
+  }
+
   useEffect(() => {
     void loadNotes();
   }, []);
@@ -34,7 +63,9 @@ export function useNotes() {
   return {
     notes,
     loading,
+    creating,
     error,
     refresh: loadNotes,
+    createNote,
   };
 }

@@ -5,17 +5,17 @@ import { FormEvent, useState } from "react";
 import { Button } from "@/components/ui/actions";
 import { Input, Textarea } from "@/components/ui/forms";
 
-import { useCreateNote } from "@/features/notes/hooks";
-
 interface NoteFormProps {
-  onCreated?: () => Promise<void> | void;
+  onSubmit: (title: string, content: string) => Promise<void>;
+  loading: boolean;
+  error: string | null;
 }
 
 export default function NoteForm({
-  onCreated,
+  onSubmit,
+  loading,
+  error,
 }: NoteFormProps) {
-  const { submit, loading, error } = useCreateNote();
-
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
@@ -28,15 +28,10 @@ export default function NoteForm({
       return;
     }
 
-    await submit({
-      title,
-      content,
-    });
+    await onSubmit(title, content);
 
     setTitle("");
     setContent("");
-
-    await onCreated?.();
   }
 
   return (

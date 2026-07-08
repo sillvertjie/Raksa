@@ -11,15 +11,26 @@ export default function NotesSection() {
   const {
     notes,
     loading,
+    creating,
     error,
-    refresh,
+    createNote,
   } = useNotes();
+
+  async function handleCreateNote(
+    title: string,
+    content: string
+  ) {
+    await createNote({
+      title,
+      content,
+    });
+  }
 
   if (loading) {
     return <p>Loading...</p>;
   }
 
-  if (error) {
+  if (error && notes.length === 0) {
     return <p>{error}</p>;
   }
 
@@ -27,7 +38,11 @@ export default function NotesSection() {
     <section className="space-y-6">
       <NotesHeader />
 
-      <NoteForm onCreated={refresh} />
+      <NoteForm
+        onSubmit={handleCreateNote}
+        loading={creating}
+        error={error}
+      />
 
       {notes.length === 0 ? (
         <EmptyNotes />
