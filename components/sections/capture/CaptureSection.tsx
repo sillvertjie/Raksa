@@ -1,23 +1,32 @@
 "use client";
 
-import { useRef } from "react";
-
 import CaptureInput from "@/components/CaptureInput";
-import CaptureList, {
-  CaptureListRef,
-} from "@/components/CaptureList";
+import CaptureList from "@/components/CaptureList";
+
+import { useCaptures } from "@/features/capture/hooks";
 
 export default function CaptureSection() {
-  const captureListRef = useRef<CaptureListRef>(null);
-
-  function handleCreated() {
-    captureListRef.current?.refresh();
-  }
+  const {
+    captures,
+    loading,
+    creating,
+    updatingId,
+    deletingId,
+    error,
+    createCapture,
+    updateCapture,
+    deleteCapture,
+  } = useCaptures();
 
   return (
     <section className="mt-10">
       <CaptureInput
-        onCreated={handleCreated}
+        onCreate={async (content) => {
+          await createCapture({
+            content,
+          });
+        }}
+        loading={creating}
       />
 
       <div className="mt-10">
@@ -26,7 +35,17 @@ export default function CaptureSection() {
         </h2>
 
         <CaptureList
-          ref={captureListRef}
+          captures={captures}
+          loading={loading}
+          error={error}
+          updatingId={updatingId}
+          deletingId={deletingId}
+          onDelete={deleteCapture}
+          onSave={async (id, content) => {
+            await updateCapture(id, {
+              content,
+            });
+          }}
         />
       </div>
     </section>

@@ -2,27 +2,46 @@
 
 import { useState } from "react";
 
-import { Button, Dialog, Textarea } from "@/components/ui";
+import {
+  Button,
+  Dialog,
+  Textarea,
+} from "@/components/ui";
+
 import type { Capture } from "@/features/capture/types/capture";
 
 interface CaptureItemProps {
   capture: Capture;
-  onDelete: (id: string) => void;
-  onSave: (id: string, content: string) => Promise<void>;
+
+  updating?: boolean;
+  deleting?: boolean;
+
+  onDelete: (id: string) => Promise<void>;
+
+  onSave: (
+    id: string,
+    content: string
+  ) => Promise<void>;
 }
 
 export default function CaptureItem({
   capture,
+  updating = false,
+  deleting = false,
   onDelete,
   onSave,
 }: CaptureItemProps) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedContent, setEditedContent] = useState(capture.content);
+  const [isEditing, setIsEditing] =
+    useState(false);
 
-  const [isSaving, setIsSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [editedContent, setEditedContent] =
+    useState(capture.content);
 
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [error, setError] =
+    useState<string | null>(null);
+
+  const [showDeleteDialog, setShowDeleteDialog] =
+    useState(false);
 
   function handleEdit() {
     setEditedContent(capture.content);
@@ -37,24 +56,34 @@ export default function CaptureItem({
   }
 
   async function handleSave() {
-    if (isSaving) return;
+    if (updating) return;
 
-    setIsSaving(true);
     setError(null);
 
     try {
-      await onSave(capture.id, editedContent);
+      await onSave(
+        capture.id,
+        editedContent
+      );
+
       setIsEditing(false);
     } catch {
-      setError("Gagal menyimpan perubahan.");
-    } finally {
-      setIsSaving(false);
+      setError(
+        "Gagal menyimpan perubahan."
+      );
     }
   }
 
-  function handleDeleteConfirm() {
-    onDelete(capture.id);
-    setShowDeleteDialog(false);
+  async function handleDeleteConfirm() {
+    try {
+      await onDelete(capture.id);
+
+      setShowDeleteDialog(false);
+    } catch {
+      setError(
+        "Gagal menghapus capture."
+      );
+    }
   }
 
   return (
@@ -63,8 +92,12 @@ export default function CaptureItem({
         <Textarea
           rows={4}
           value={editedContent}
-          onChange={(e) => setEditedContent(e.target.value)}
-          disabled={isSaving}
+          onChange={(event) =>
+            setEditedContent(
+              event.target.value
+            )
+          }
+          disabled={updating}
         />
       ) : (
         <p className="whitespace-pre-wrap">
@@ -79,7 +112,9 @@ export default function CaptureItem({
       )}
 
       <p className="mt-2 text-sm text-gray-500">
-        {new Date(capture.createdAt).toLocaleString()}
+        {new Date(
+          capture.createdAt
+        ).toLocaleString()}
       </p>
 
       <div className="mt-4 flex gap-2">
@@ -87,27 +122,34 @@ export default function CaptureItem({
           <>
             <Button
               onClick={handleSave}
-              disabled={isSaving}
+              disabled={updating}
             >
-              {isSaving ? "Saving..." : "Save"}
+              {updating
+                ? "Saving..."
+                : "Save"}
             </Button>
 
             <Button
               onClick={handleCancel}
-              disabled={isSaving}
+              disabled={updating}
             >
               Cancel
             </Button>
           </>
         ) : (
-          <Button onClick={handleEdit}>
+          <Button
+            onClick={handleEdit}
+            disabled={deleting}
+          >
             Edit
           </Button>
         )}
 
         <Button
-          onClick={() => setShowDeleteDialog(true)}
-          disabled={isSaving}
+          onClick={() =>
+            setShowDeleteDialog(true)
+          }
+          disabled={deleting}
         >
           Delete
         </Button>
@@ -117,7 +159,10 @@ export default function CaptureItem({
         open={showDeleteDialog}
         title="Delete Capture?"
         description="Data yang sudah dihapus tidak dapat dikembalikan."
-        onCancel={() => setShowDeleteDialog(false)}
+        loading={deleting}
+        onCancel={() =>
+          setShowDeleteDialog(false)
+        }
         onConfirm={handleDeleteConfirm}
       />
     </div>

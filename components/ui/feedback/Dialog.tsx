@@ -4,6 +4,9 @@ interface DialogProps {
   open: boolean;
   title: string;
   description?: string;
+
+  loading?: boolean;
+
   onConfirm: () => void;
   onCancel: () => void;
 }
@@ -12,6 +15,7 @@ export default function Dialog({
   open,
   title,
   description,
+  loading = false,
   onConfirm,
   onCancel,
 }: DialogProps) {
@@ -33,6 +37,7 @@ export default function Dialog({
         <div className="mt-6 flex justify-end gap-2">
           <Button
             onClick={onCancel}
+            disabled={loading}
             className="bg-gray-500"
           >
             Cancel
@@ -40,8 +45,11 @@ export default function Dialog({
 
           <Button
             onClick={onConfirm}
+            disabled={loading}
           >
-            Confirm
+            {loading
+              ? "Deleting..."
+              : "Confirm"}
           </Button>
         </div>
       </div>

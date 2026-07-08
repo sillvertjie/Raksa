@@ -1,42 +1,26 @@
 "use client";
 
 import { useState } from "react";
-import { Button,  } from "@/components/ui";
+
+import { Button } from "@/components/ui";
 
 interface CaptureInputProps {
-  onCreated?: () => void;
+  onCreate: (content: string) => Promise<void>;
+  loading: boolean;
 }
 
-export default function CaptureInput({ onCreated }: CaptureInputProps) {
+export default function CaptureInput({
+  onCreate,
+  loading,
+}: CaptureInputProps) {
   const [content, setContent] = useState("");
-  const [loading, setLoading] = useState(false);
 
   async function handleSubmit() {
     if (!content.trim()) return;
 
-    setLoading(true);
+    await onCreate(content);
 
-    try {
-      const response = await fetch("/api/capture", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ content }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to create capture");
-      }
-
-      setContent("");
-      onCreated?.();
-    } catch (error) {
-      console.error(error);
-      alert("Failed to save capture.");
-    } finally {
-      setLoading(false);
-    }
+    setContent("");
   }
 
   return (
@@ -46,11 +30,16 @@ export default function CaptureInput({ onCreated }: CaptureInputProps) {
         rows={4}
         placeholder="Write something..."
         value={content}
-        onChange={(e) => setContent(e.target.value)}
+        onChange={(event) =>
+          setContent(event.target.value)
+        }
         disabled={loading}
       />
 
-      <Button onClick={handleSubmit} disabled={loading}>
+      <Button
+        onClick={handleSubmit}
+        disabled={loading}
+      >
         {loading ? "Saving..." : "Save"}
       </Button>
     </div>
