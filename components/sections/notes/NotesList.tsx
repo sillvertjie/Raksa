@@ -25,6 +25,8 @@ export default function NotesList({
           id={note.id}
           title={note.title}
           content={note.content}
+          createdAt={note.createdAt}
+          updatedAt={note.updatedAt}
           loading={updating}
           onUpdate={onUpdate}
         />

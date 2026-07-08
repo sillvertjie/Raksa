@@ -5,10 +5,14 @@ import { useState } from "react";
 import { Button } from "@/components/ui/actions";
 import { Input, Textarea } from "@/components/ui/forms";
 
+import { formatNoteDate } from "@/features/notes/utils/date";
+
 interface NoteCardProps {
   id: string;
   title: string;
   content: string;
+  createdAt: string;
+  updatedAt: string;
   loading?: boolean;
   onUpdate: (
     id: string,
@@ -21,11 +25,14 @@ export default function NoteCard({
   id,
   title,
   content,
+  createdAt,
+  updatedAt,
   loading = false,
   onUpdate,
 }: NoteCardProps) {
   const [editing, setEditing] = useState(false);
-  const [editTitle, setEditTitle] = useState(title);
+  const [editTitle, setEditTitle] =
+    useState(title);
   const [editContent, setEditContent] =
     useState(content);
 
@@ -54,7 +61,7 @@ export default function NoteCard({
 
   if (editing) {
     return (
-      <article className="rounded-xl border bg-white p-5 shadow-sm space-y-4">
+      <article className="space-y-4 rounded-xl border bg-white p-5 shadow-sm">
         <Input
           value={editTitle}
           onChange={(event) =>
@@ -72,7 +79,7 @@ export default function NoteCard({
           }
         />
 
-        <div className="flex gap-2 justify-end">
+        <div className="flex justify-end gap-2">
           <Button
             type="button"
             onClick={handleCancel}
@@ -105,6 +112,20 @@ export default function NoteCard({
           <p className="mt-2 whitespace-pre-wrap text-sm text-slate-600">
             {content}
           </p>
+
+          <div className="mt-4 space-y-1 text-xs text-slate-500">
+            <p>
+              Created •{" "}
+              {formatNoteDate(createdAt)}
+            </p>
+
+            {createdAt !== updatedAt && (
+              <p>
+                Updated •{" "}
+                {formatNoteDate(updatedAt)}
+              </p>
+            )}
+          </div>
         </div>
 
         <Button
