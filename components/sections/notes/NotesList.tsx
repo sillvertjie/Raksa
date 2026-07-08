@@ -1,4 +1,5 @@
 import { Note } from "@/features/notes/types/note";
+
 import NoteCard from "./NoteCard";
 
 interface NotesListProps {
@@ -15,6 +16,8 @@ export default function NotesList({
           key={note.id}
           title={note.title}
           content={note.content}
+          onEdit={() => {}}
+          onDelete={() => {}}
         />
       ))}
     </div>
