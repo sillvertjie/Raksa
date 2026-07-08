@@ -13,10 +13,17 @@ import { Note } from "../types/note";
 export function useNotes() {
   const [notes, setNotes] = useState<Note[]>([]);
   const [loading, setLoading] = useState(true);
+
   const [creating, setCreating] = useState(false);
-  const [updating, setUpdating] = useState(false);
-  const [deleting, setDeleting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+
+  const [updatingId, setUpdatingId] =
+    useState<string | null>(null);
+
+  const [deletingId, setDeletingId] =
+    useState<string | null>(null);
+
+  const [error, setError] =
+    useState<string | null>(null);
 
   async function loadNotes() {
     try {
@@ -54,6 +61,7 @@ export function useNotes() {
           : "Failed to create note.";
 
       setError(message);
+
       throw err;
     } finally {
       setCreating(false);
@@ -65,10 +73,13 @@ export function useNotes() {
     dto: UpdateNoteDTO
   ) {
     try {
-      setUpdating(true);
+      setUpdatingId(id);
       setError(null);
 
-      const updated = await updateNoteApi(id, dto);
+      const updated = await updateNoteApi(
+        id,
+        dto
+      );
 
       setNotes((prev) =>
         prev.map((note) =>
@@ -84,21 +95,24 @@ export function useNotes() {
           : "Failed to update note.";
 
       setError(message);
+
       throw err;
     } finally {
-      setUpdating(false);
+      setUpdatingId(null);
     }
   }
 
   async function deleteNote(id: string) {
     try {
-      setDeleting(true);
+      setDeletingId(id);
       setError(null);
 
       await deleteNoteApi(id);
 
       setNotes((prev) =>
-        prev.filter((note) => note.id !== id)
+        prev.filter(
+          (note) => note.id !== id
+        )
       );
     } catch (err) {
       const message =
@@ -107,9 +121,10 @@ export function useNotes() {
           : "Failed to delete note.";
 
       setError(message);
+
       throw err;
     } finally {
-      setDeleting(false);
+      setDeletingId(null);
     }
   }
 
@@ -121,10 +136,14 @@ export function useNotes() {
     notes,
     loading,
     creating,
-    updating,
-    deleting,
+
+    updatingId,
+    deletingId,
+
     error,
+
     refresh: loadNotes,
+
     createNote,
     updateNote,
     deleteNote,

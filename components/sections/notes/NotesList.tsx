@@ -4,22 +4,20 @@ import NoteCard from "./NoteCard";
 
 interface NotesListProps {
   notes: Note[];
-  updating: boolean;
-  deleting: boolean;
+  updatingId: string | null;
+  deletingId: string | null;
   onUpdate: (
     id: string,
     title: string,
     content: string
   ) => Promise<void>;
-  onDelete: (
-    id: string
-  ) => Promise<void>;
+  onDelete: (id: string) => Promise<void>;
 }
 
 export default function NotesList({
   notes,
-  updating,
-  deleting,
+  updatingId,
+  deletingId,
   onUpdate,
   onDelete,
 }: NotesListProps) {
@@ -33,8 +31,8 @@ export default function NotesList({
           content={note.content}
           createdAt={note.createdAt}
           updatedAt={note.updatedAt}
-          updating={updating}
-          deleting={deleting}
+          updating={updatingId === note.id}
+          deleting={deletingId === note.id}
           onUpdate={onUpdate}
           onDelete={onDelete}
         />

@@ -12,8 +12,8 @@ export default function NotesSection() {
     notes,
     loading,
     creating,
-    updating,
-    deleting,
+    updatingId,
+    deletingId,
     error,
     createNote,
     updateNote,
@@ -68,8 +68,8 @@ export default function NotesSection() {
       ) : (
         <NotesList
           notes={notes}
-          updating={updating}
-          deleting={deleting}
+          updatingId={updatingId}
+          deletingId={deletingId}
           onUpdate={handleUpdateNote}
           onDelete={handleDeleteNote}
         />
