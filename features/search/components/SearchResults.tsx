@@ -1,9 +1,17 @@
-import { Card, Heading, Text } from "@/components/ui";
+import {
+  Card,
+  Heading,
+  Text,
+} from "@/components/ui";
 
 import type { SearchResult } from "../types/search";
 
 interface SearchResultsProps {
   result: SearchResult | null;
+}
+
+function formatDate(date: string) {
+  return new Date(date).toLocaleString();
 }
 
 export default function SearchResults({
@@ -13,11 +21,11 @@ export default function SearchResults({
     return null;
   }
 
-  const hasResults =
-    result.notes.length > 0 ||
-    result.captures.length > 0;
+  const totalResults =
+    result.notes.length +
+    result.captures.length;
 
-  if (!hasResults) {
+  if (totalResults === 0) {
     return (
       <Text className="mt-6 text-slate-500">
         No results found.
@@ -29,12 +37,14 @@ export default function SearchResults({
     <div className="mt-6 space-y-8">
       <section>
         <Heading className="text-lg">
-          Notes
+          Notes ({result.notes.length})
         </Heading>
 
         <div className="mt-3 space-y-3">
           {result.notes.length === 0 ? (
-            <Text>No matching notes.</Text>
+            <Text>
+              No matching notes.
+            </Text>
           ) : (
             result.notes.map((note) => (
               <Card key={note.id}>
@@ -45,6 +55,10 @@ export default function SearchResults({
                 <Text className="mt-2">
                   {note.content}
                 </Text>
+
+                <Text className="mt-2 text-sm text-slate-500">
+                  {formatDate(note.createdAt)}
+                </Text>
               </Card>
             ))
           )}
@@ -53,16 +67,26 @@ export default function SearchResults({
 
       <section>
         <Heading className="text-lg">
-          Captures
+          Captures ({result.captures.length})
         </Heading>
 
         <div className="mt-3 space-y-3">
           {result.captures.length === 0 ? (
-            <Text>No matching captures.</Text>
+            <Text>
+              No matching captures.
+            </Text>
           ) : (
             result.captures.map((capture) => (
               <Card key={capture.id}>
-                <Text>{capture.content}</Text>
+                <Text>
+                  {capture.content}
+                </Text>
+
+                <Text className="mt-2 text-sm text-slate-500">
+                  {formatDate(
+                    capture.createdAt
+                  )}
+                </Text>
               </Card>
             ))
           )}
