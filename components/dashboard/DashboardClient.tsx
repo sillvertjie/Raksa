@@ -1,8 +1,11 @@
 "use client";
 
 import {
-  HeaderSection,
   CaptureSection,
+  FutureModulesSection,
+  HeaderSection,
+  NotesSection,
+  SummarySection,
 } from "@/components/sections";
 
 export default function DashboardClient() {
@@ -10,7 +13,13 @@ export default function DashboardClient() {
     <>
       <HeaderSection />
 
+      <SummarySection />
+
       <CaptureSection />
+
+      <NotesSection />
+
+      <FutureModulesSection />
     </>
   );
 }
