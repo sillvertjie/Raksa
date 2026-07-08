@@ -12,8 +12,10 @@ export default function NotesSection() {
     notes,
     loading,
     creating,
+    updating,
     error,
     createNote,
+    updateNote,
   } = useNotes();
 
   async function handleCreateNote(
@@ -21,6 +23,17 @@ export default function NotesSection() {
     content: string
   ) {
     await createNote({
+      title,
+      content,
+    });
+  }
+
+  async function handleUpdateNote(
+    id: string,
+    title: string,
+    content: string
+  ) {
+    await updateNote(id, {
       title,
       content,
     });
@@ -47,7 +60,11 @@ export default function NotesSection() {
       {notes.length === 0 ? (
         <EmptyNotes />
       ) : (
-        <NotesList notes={notes} />
+        <NotesList
+          notes={notes}
+          updating={updating}
+          onUpdate={handleUpdateNote}
+        />
       )}
     </section>
   );
