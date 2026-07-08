@@ -37,7 +37,7 @@ export async function updateCapture(
   dto: UpdateCaptureDTO
 ): Promise<Capture> {
   const response = await fetch(`${API_URL}/${id}`, {
-    method: "PUT",
+    method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },

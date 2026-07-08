@@ -1,53 +1,43 @@
 "use client";
 
-import CaptureInput from "@/components/CaptureInput";
 import CaptureList from "@/components/CaptureList";
 
-import { useCaptures } from "@/features/capture/hooks";
+import type { Capture } from "@/features/capture/types/capture";
 
-export default function CaptureSection() {
-  const {
-    captures,
-    loading,
-    creating,
-    updatingId,
-    deletingId,
-    error,
-    createCapture,
-    updateCapture,
-    deleteCapture,
-  } = useCaptures();
+interface CaptureSectionProps {
+  captures: Capture[];
+  loading: boolean;
+  error: string | null;
+  updatingId: string | null;
+  deletingId: string | null;
+  onDelete: (id: string) => Promise<void>;
+  onSave: (id: string, content: string) => Promise<void>;
+}
 
+export default function CaptureSection({
+  captures,
+  loading,
+  error,
+  updatingId,
+  deletingId,
+  onDelete,
+  onSave,
+}: CaptureSectionProps) {
   return (
     <section className="mt-10">
-      <CaptureInput
-        onCreate={async (content) => {
-          await createCapture({
-            content,
-          });
-        }}
-        loading={creating}
+      <h2 className="mb-4 text-lg font-semibold">
+        Recent Captures
+      </h2>
+
+      <CaptureList
+        captures={captures}
+        loading={loading}
+        error={error}
+        updatingId={updatingId}
+        deletingId={deletingId}
+        onDelete={onDelete}
+        onSave={onSave}
       />
-
-      <div className="mt-10">
-        <h2 className="mb-4 text-lg font-semibold">
-          Recent Captures
-        </h2>
-
-        <CaptureList
-          captures={captures}
-          loading={loading}
-          error={error}
-          updatingId={updatingId}
-          deletingId={deletingId}
-          onDelete={deleteCapture}
-          onSave={async (id, content) => {
-            await updateCapture(id, {
-              content,
-            });
-          }}
-        />
-      </div>
     </section>
   );
 }
