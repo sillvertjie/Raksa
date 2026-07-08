@@ -1,5 +1,7 @@
 "use client";
 
+import { SearchSection } from "@/features/search/components";
+
 import {
   CaptureSection,
   FutureModulesSection,
@@ -14,6 +16,8 @@ export default function DashboardClient() {
       <HeaderSection />
 
       <SummarySection />
+
+      <SearchSection />
 
       <CaptureSection />
 
