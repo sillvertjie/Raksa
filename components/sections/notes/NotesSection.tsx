@@ -13,9 +13,11 @@ export default function NotesSection() {
     loading,
     creating,
     updating,
+    deleting,
     error,
     createNote,
     updateNote,
+    deleteNote,
   } = useNotes();
 
   async function handleCreateNote(
@@ -37,6 +39,10 @@ export default function NotesSection() {
       title,
       content,
     });
+  }
+
+  async function handleDeleteNote(id: string) {
+    await deleteNote(id);
   }
 
   if (loading) {
@@ -63,7 +69,9 @@ export default function NotesSection() {
         <NotesList
           notes={notes}
           updating={updating}
+          deleting={deleting}
           onUpdate={handleUpdateNote}
+          onDelete={handleDeleteNote}
         />
       )}
     </section>

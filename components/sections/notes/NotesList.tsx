@@ -5,17 +5,23 @@ import NoteCard from "./NoteCard";
 interface NotesListProps {
   notes: Note[];
   updating: boolean;
+  deleting: boolean;
   onUpdate: (
     id: string,
     title: string,
     content: string
+  ) => Promise<void>;
+  onDelete: (
+    id: string
   ) => Promise<void>;
 }
 
 export default function NotesList({
   notes,
   updating,
+  deleting,
   onUpdate,
+  onDelete,
 }: NotesListProps) {
   return (
     <div className="space-y-4">
@@ -27,8 +33,10 @@ export default function NotesList({
           content={note.content}
           createdAt={note.createdAt}
           updatedAt={note.updatedAt}
-          loading={updating}
+          updating={updating}
+          deleting={deleting}
           onUpdate={onUpdate}
+          onDelete={onDelete}
         />
       ))}
     </div>

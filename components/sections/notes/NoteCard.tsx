@@ -13,12 +13,14 @@ interface NoteCardProps {
   content: string;
   createdAt: string;
   updatedAt: string;
-  loading?: boolean;
+  updating?: boolean;
+  deleting?: boolean;
   onUpdate: (
     id: string,
     title: string,
     content: string
   ) => Promise<void>;
+  onDelete: (id: string) => Promise<void>;
 }
 
 export default function NoteCard({
@@ -27,12 +29,13 @@ export default function NoteCard({
   content,
   createdAt,
   updatedAt,
-  loading = false,
+  updating = false,
+  deleting = false,
   onUpdate,
+  onDelete,
 }: NoteCardProps) {
   const [editing, setEditing] = useState(false);
-  const [editTitle, setEditTitle] =
-    useState(title);
+  const [editTitle, setEditTitle] = useState(title);
   const [editContent, setEditContent] =
     useState(content);
 
@@ -51,6 +54,18 @@ export default function NoteCard({
     );
 
     setEditing(false);
+  }
+
+  async function handleDelete() {
+    const confirmed = window.confirm(
+      "Delete this note?"
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    await onDelete(id);
   }
 
   function handleCancel() {
@@ -89,12 +104,10 @@ export default function NoteCard({
 
           <Button
             type="button"
-            disabled={loading}
+            disabled={updating}
             onClick={handleSave}
           >
-            {loading
-              ? "Saving..."
-              : "Save"}
+            {updating ? "Saving..." : "Save"}
           </Button>
         </div>
       </article>
@@ -115,25 +128,36 @@ export default function NoteCard({
 
           <div className="mt-4 space-y-1 text-xs text-slate-500">
             <p>
-              Created •{" "}
-              {formatNoteDate(createdAt)}
+              Created • {formatNoteDate(createdAt)}
             </p>
 
             {createdAt !== updatedAt && (
               <p>
-                Updated •{" "}
-                {formatNoteDate(updatedAt)}
+                Updated • {formatNoteDate(updatedAt)}
               </p>
             )}
           </div>
         </div>
 
-        <Button
-          type="button"
-          onClick={() => setEditing(true)}
-        >
-          Edit
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            type="button"
+            onClick={() => setEditing(true)}
+          >
+            Edit
+          </Button>
+
+          <Button
+            type="button"
+            disabled={deleting}
+            onClick={handleDelete}
+            className="bg-red-600 hover:bg-red-700"
+          >
+            {deleting
+              ? "Deleting..."
+              : "Delete"}
+          </Button>
+        </div>
       </div>
     </article>
   );

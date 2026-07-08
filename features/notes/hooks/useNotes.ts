@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import {
   createNote as createNoteApi,
+  deleteNote as deleteNoteApi,
   getNotes,
   updateNote as updateNoteApi,
 } from "../api/notes.api";
@@ -14,6 +15,7 @@ export function useNotes() {
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
   const [updating, setUpdating] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   async function loadNotes() {
@@ -88,6 +90,29 @@ export function useNotes() {
     }
   }
 
+  async function deleteNote(id: string) {
+    try {
+      setDeleting(true);
+      setError(null);
+
+      await deleteNoteApi(id);
+
+      setNotes((prev) =>
+        prev.filter((note) => note.id !== id)
+      );
+    } catch (err) {
+      const message =
+        err instanceof Error
+          ? err.message
+          : "Failed to delete note.";
+
+      setError(message);
+      throw err;
+    } finally {
+      setDeleting(false);
+    }
+  }
+
   useEffect(() => {
     void loadNotes();
   }, []);
@@ -97,9 +122,11 @@ export function useNotes() {
     loading,
     creating,
     updating,
+    deleting,
     error,
     refresh: loadNotes,
     createNote,
     updateNote,
+    deleteNote,
   };
 }
