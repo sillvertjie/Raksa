@@ -12,6 +12,7 @@ export default function SearchSection() {
     loading,
     error,
     search,
+    clear,
   } = useSearch();
 
   async function handleSearch(query: string) {
@@ -34,6 +35,7 @@ export default function SearchSection() {
         <SearchInput
           loading={loading}
           onSearch={handleSearch}
+          onClear={clear}
         />
       </div>
 

@@ -7,11 +7,13 @@ import { Button, Input } from "@/components/ui";
 interface SearchInputProps {
   loading: boolean;
   onSearch: (query: string) => Promise<void>;
+  onClear: () => void;
 }
 
 export default function SearchInput({
   loading,
   onSearch,
+  onClear,
 }: SearchInputProps) {
   const [query, setQuery] = useState("");
 
@@ -21,6 +23,11 @@ export default function SearchInput({
     event.preventDefault();
 
     await onSearch(query);
+  }
+
+  function handleClear() {
+    setQuery("");
+    onClear();
   }
 
   return (
@@ -43,6 +50,14 @@ export default function SearchInput({
         disabled={!query.trim()}
       >
         Search
+      </Button>
+
+      <Button
+        type="button"
+        onClick={handleClear}
+        disabled={loading}
+      >
+        Clear
       </Button>
     </form>
   );
