@@ -2,12 +2,21 @@
 
 import { FormEvent, useState } from "react";
 
-import { Button } from "@/components/ui/actions";
-import { Input, Textarea } from "@/components/ui/forms";
+import {
+  Button,
+  ErrorMessage,
+  Input,
+  Textarea,
+} from "@/components/ui";
 
 interface NoteFormProps {
-  onSubmit: (title: string, content: string) => Promise<void>;
+  onSubmit: (
+    title: string,
+    content: string
+  ) => Promise<void>;
+
   loading: boolean;
+
   error: string | null;
 }
 
@@ -17,6 +26,7 @@ export default function NoteForm({
   error,
 }: NoteFormProps) {
   const [title, setTitle] = useState("");
+
   const [content, setContent] = useState("");
 
   async function handleSubmit(
@@ -31,6 +41,7 @@ export default function NoteForm({
     await onSubmit(title, content);
 
     setTitle("");
+
     setContent("");
   }
 
@@ -57,16 +68,15 @@ export default function NoteForm({
       />
 
       {error && (
-        <p className="text-sm text-red-500">
-          {error}
-        </p>
+        <ErrorMessage message={error} />
       )}
 
       <Button
         type="submit"
-        disabled={loading}
+        loading={loading}
+        loadingText="Saving..."
       >
-        {loading ? "Saving..." : "Save Note"}
+        Save Note
       </Button>
     </form>
   );

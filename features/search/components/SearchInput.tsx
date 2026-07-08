@@ -22,7 +22,13 @@ export default function SearchInput({
   ) {
     event.preventDefault();
 
-    await onSearch(query);
+    const trimmedQuery = query.trim();
+
+    if (!trimmedQuery) {
+      return;
+    }
+
+    await onSearch(trimmedQuery);
   }
 
   function handleClear() {
@@ -55,7 +61,7 @@ export default function SearchInput({
       <Button
         type="button"
         onClick={handleClear}
-        disabled={loading}
+        disabled={loading || !query.trim()}
       >
         Clear
       </Button>

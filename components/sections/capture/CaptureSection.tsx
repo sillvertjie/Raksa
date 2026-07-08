@@ -1,5 +1,7 @@
 "use client";
 
+import { SectionTitle } from "@/components/ui";
+
 import CaptureList from "@/components/CaptureList";
 
 import type { Capture } from "@/features/capture/types/capture";
@@ -23,21 +25,21 @@ export default function CaptureSection({
   onDelete,
   onSave,
 }: CaptureSectionProps) {
-  return (
-    <section className="mt-10">
-      <h2 className="mb-4 text-lg font-semibold">
-        Recent Captures
-      </h2>
+return (
+  <section className="mt-10">
+    <SectionTitle className="mb-4">
+      Recent Captures
+    </SectionTitle>
 
-      <CaptureList
-        captures={captures}
-        loading={loading}
-        error={error}
-        updatingId={updatingId}
-        deletingId={deletingId}
-        onDelete={onDelete}
-        onSave={onSave}
-      />
-    </section>
-  );
+    <CaptureList
+      captures={captures}
+      loading={loading}
+      error={error}
+      updatingId={updatingId}
+      deletingId={deletingId}
+      onDelete={onDelete}
+      onSave={onSave}
+    />
+  </section>
+);
 }

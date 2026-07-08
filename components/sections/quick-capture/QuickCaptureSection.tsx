@@ -1,5 +1,7 @@
 "use client";
 
+import { SectionTitle } from "@/components/ui";
+
 import CaptureInput from "@/components/CaptureInput";
 
 interface QuickCaptureSectionProps {
@@ -13,9 +15,9 @@ export default function QuickCaptureSection({
 }: QuickCaptureSectionProps) {
   return (
     <section className="mt-10">
-      <h2 className="mb-4 text-lg font-semibold">
+      <SectionTitle className="mb-4">
         Quick Capture
-      </h2>
+      </SectionTitle>
 
       <CaptureInput
         onCreate={onCreate}

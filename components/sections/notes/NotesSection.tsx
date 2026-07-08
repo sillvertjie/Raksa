@@ -1,5 +1,10 @@
 "use client";
 
+import {
+  ErrorMessage,
+  Loading,
+} from "@/components/ui";
+
 import { useNotes } from "@/features/notes/hooks";
 
 import EmptyNotes from "./EmptyNotes";
@@ -46,15 +51,19 @@ export default function NotesSection() {
   }
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   if (error && notes.length === 0) {
-    return <p>{error}</p>;
+    return (
+      <ErrorMessage
+        message={error}
+      />
+    );
   }
 
   return (
-    <section className="space-y-6">
+    <section className="mt-10 space-y-6">
       <NotesHeader />
 
       <NoteForm

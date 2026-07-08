@@ -2,8 +2,13 @@
 
 import { useState } from "react";
 
-import { Button } from "@/components/ui/actions";
-import { Input, Textarea } from "@/components/ui/forms";
+import {
+  Button,
+  Heading,
+  Input,
+  Text,
+  Textarea,
+} from "@/components/ui";
 
 import { formatNoteDate } from "@/features/notes/utils/date";
 
@@ -13,13 +18,16 @@ interface NoteCardProps {
   content: string;
   createdAt: string;
   updatedAt: string;
+
   updating?: boolean;
   deleting?: boolean;
+
   onUpdate: (
     id: string,
     title: string,
     content: string
   ) => Promise<void>;
+
   onDelete: (id: string) => Promise<void>;
 }
 
@@ -34,8 +42,12 @@ export default function NoteCard({
   onUpdate,
   onDelete,
 }: NoteCardProps) {
-  const [editing, setEditing] = useState(false);
-  const [editTitle, setEditTitle] = useState(title);
+  const [editing, setEditing] =
+    useState(false);
+
+  const [editTitle, setEditTitle] =
+    useState(title);
+
   const [editContent, setEditContent] =
     useState(content);
 
@@ -80,7 +92,9 @@ export default function NoteCard({
         <Input
           value={editTitle}
           onChange={(event) =>
-            setEditTitle(event.target.value)
+            setEditTitle(
+              event.target.value
+            )
           }
         />
 
@@ -98,16 +112,18 @@ export default function NoteCard({
           <Button
             type="button"
             onClick={handleCancel}
+            disabled={updating}
           >
             Cancel
           </Button>
 
           <Button
             type="button"
-            disabled={updating}
             onClick={handleSave}
+            loading={updating}
+            loadingText="Saving..."
           >
-            {updating ? "Saving..." : "Save"}
+            Save
           </Button>
         </div>
       </article>
@@ -118,23 +134,23 @@ export default function NoteCard({
     <article className="rounded-xl border bg-white p-5 shadow-sm">
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1">
-          <h3 className="text-lg font-semibold">
+          <Heading className="text-lg">
             {title}
-          </h3>
+          </Heading>
 
-          <p className="mt-2 whitespace-pre-wrap text-sm text-slate-600">
+          <Text className="mt-2 whitespace-pre-wrap text-slate-600">
             {content}
-          </p>
+          </Text>
 
-          <div className="mt-4 space-y-1 text-xs text-slate-500">
-            <p>
+          <div className="mt-4 space-y-1">
+            <Text className="text-xs text-slate-500">
               Created • {formatNoteDate(createdAt)}
-            </p>
+            </Text>
 
             {createdAt !== updatedAt && (
-              <p>
+              <Text className="text-xs text-slate-500">
                 Updated • {formatNoteDate(updatedAt)}
-              </p>
+              </Text>
             )}
           </div>
         </div>
@@ -142,20 +158,22 @@ export default function NoteCard({
         <div className="flex gap-2">
           <Button
             type="button"
-            onClick={() => setEditing(true)}
+            onClick={() =>
+              setEditing(true)
+            }
+            disabled={deleting}
           >
             Edit
           </Button>
 
           <Button
             type="button"
-            disabled={deleting}
             onClick={handleDelete}
+            loading={deleting}
+            loadingText="Deleting..."
             className="bg-red-600 hover:bg-red-700"
           >
-            {deleting
-              ? "Deleting..."
-              : "Delete"}
+            Delete
           </Button>
         </div>
       </div>

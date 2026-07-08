@@ -1,3 +1,8 @@
+import {
+  Heading,
+  Text,
+} from "@/components/ui";
+
 export default function EmptyNotes() {
   return (
     <div
@@ -11,13 +16,13 @@ export default function EmptyNotes() {
         text-center
       "
     >
-      <h2 className="text-lg font-semibold text-slate-700">
+      <Heading className="text-lg text-slate-700">
         No Notes Yet
-      </h2>
+      </Heading>
 
-      <p className="mt-2 text-sm text-slate-500">
+      <Text className="mt-2 text-slate-500">
         Create your first note to start building your knowledge base.
-      </p>
+      </Text>
     </div>
   );
 }
