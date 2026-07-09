@@ -27,12 +27,12 @@ interface NotesSectionProps {
 
   onCreate: (
     dto: CreateNoteDTO
-  ) => Promise<void>;
+  ) => Promise<Note>;
 
   onUpdate: (
     id: string,
     dto: UpdateNoteDTO
-  ) => Promise<void>;
+  ) => Promise<Note>;
 
   onDelete: (
     id: string
@@ -50,39 +50,9 @@ export default function NotesSection({
   onUpdate,
   onDelete,
 }: NotesSectionProps) {
-
-  async function handleCreateNote(
-    title: string,
-    content: string
-  ) {
-    await onCreate({
-      title,
-      content,
-    });
-  }
-
-  async function handleUpdateNote(
-    id: string,
-    title: string,
-    content: string
-  ) {
-    await onUpdate(id, {
-      title,
-      content,
-    });
-  }
-
-  async function handleDeleteNote(
-    id: string
-  ) {
-    await onDelete(id);
-  }
-
-
   if (loading) {
     return <Loading />;
   }
-
 
   if (error && notes.length === 0) {
     return (
@@ -92,13 +62,20 @@ export default function NotesSection({
     );
   }
 
-
   return (
     <section className="mt-10 space-y-6">
       <NotesHeader />
 
       <NoteForm
-        onSubmit={handleCreateNote}
+        onSubmit={async (
+          title,
+          content
+        ) => {
+          await onCreate({
+            title,
+            content,
+          });
+        }}
         loading={creating}
         error={error}
       />
@@ -110,8 +87,17 @@ export default function NotesSection({
           notes={notes}
           updatingId={updatingId}
           deletingId={deletingId}
-          onUpdate={handleUpdateNote}
-          onDelete={handleDeleteNote}
+          onUpdate={async (
+            id,
+            title,
+            content
+          ) => {
+            await onUpdate(id, {
+              title,
+              content,
+            });
+          }}
+          onDelete={onDelete}
         />
       )}
     </section>

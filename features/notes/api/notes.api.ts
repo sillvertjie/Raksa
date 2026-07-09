@@ -1,10 +1,11 @@
-import { CreateNoteDTO } from "../dto/create-note.dto";
-import { UpdateNoteDTO } from "../dto/update-note.dto";
+import type { CreateNoteDTO } from "../dto/create-note.dto";
+import type { UpdateNoteDTO } from "../dto/update-note.dto";
+import type { Note } from "../types/note";
 
-const BASE_URL = "/api/notes";
+const API_URL = "/api/notes";
 
-export async function getNotes() {
-  const response = await fetch(BASE_URL);
+export async function getNotes(): Promise<Note[]> {
+  const response = await fetch(API_URL);
 
   if (!response.ok) {
     throw new Error("Failed to fetch notes.");
@@ -13,8 +14,12 @@ export async function getNotes() {
   return response.json();
 }
 
-export async function getNote(id: string) {
-  const response = await fetch(`${BASE_URL}/${id}`);
+export async function getNote(
+  id: string
+): Promise<Note> {
+  const response = await fetch(
+    `${API_URL}/${id}`
+  );
 
   if (!response.ok) {
     throw new Error("Failed to fetch note.");
@@ -23,11 +28,14 @@ export async function getNote(id: string) {
   return response.json();
 }
 
-export async function createNote(dto: CreateNoteDTO) {
-  const response = await fetch(BASE_URL, {
+export async function createNote(
+  dto: CreateNoteDTO
+): Promise<Note> {
+  const response = await fetch(API_URL, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type":
+        "application/json",
     },
     body: JSON.stringify(dto),
   });
@@ -42,14 +50,18 @@ export async function createNote(dto: CreateNoteDTO) {
 export async function updateNote(
   id: string,
   dto: UpdateNoteDTO
-) {
-  const response = await fetch(`${BASE_URL}/${id}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(dto),
-  });
+): Promise<Note> {
+  const response = await fetch(
+    `${API_URL}/${id}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type":
+          "application/json",
+      },
+      body: JSON.stringify(dto),
+    }
+  );
 
   if (!response.ok) {
     throw new Error("Failed to update note.");
@@ -58,12 +70,19 @@ export async function updateNote(
   return response.json();
 }
 
-export async function deleteNote(id: string) {
-  const response = await fetch(`${BASE_URL}/${id}`, {
-    method: "DELETE",
-  });
+export async function deleteNote(
+  id: string
+): Promise<Note> {
+  const response = await fetch(
+    `${API_URL}/${id}`,
+    {
+      method: "DELETE",
+    }
+  );
 
   if (!response.ok) {
     throw new Error("Failed to delete note.");
   }
+
+  return response.json();
 }
