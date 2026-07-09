@@ -1,12 +1,21 @@
 import React from "react";
 
+import { typography } from "@/lib/design-system";
+
 type Props = React.HTMLAttributes<HTMLParagraphElement>;
 
-export default function Text(props: Props) {
+export default function Text({
+  className,
+  ...props
+}: Props) {
   return (
     <p
       {...props}
-      className={`text-sm text-gray-700 ${props.className ?? ""}`}
+      className={`
+        ${typography.body}
+        ${typography.muted}
+        ${className ?? ""}
+      `}
     />
   );
 }

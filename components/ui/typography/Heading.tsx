@@ -1,12 +1,20 @@
 import React from "react";
 
+import { typography } from "@/lib/design-system";
+
 type Props = React.HTMLAttributes<HTMLHeadingElement>;
 
-export default function Heading(props: Props) {
+export default function Heading({
+  className,
+  ...props
+}: Props) {
   return (
     <h1
       {...props}
-      className={`text-xl font-bold ${props.className ?? ""}`}
+      className={`
+        ${typography.heading}
+        ${className ?? ""}
+      `}
     />
   );
 }

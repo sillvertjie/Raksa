@@ -1,17 +1,11 @@
 export const typography = {
-  h1: "text-4xl font-bold tracking-tight",
-  h2: "text-3xl font-semibold tracking-tight",
-  h3: "text-2xl font-semibold tracking-tight",
-  h4: "text-xl font-semibold",
+  heading: "text-xl font-bold",
 
-  bodyLg: "text-lg leading-8",
-  body: "text-base leading-7",
-  bodySm: "text-sm leading-6",
+  sectionTitle: "text-lg font-semibold",
 
-  caption: "text-xs leading-5",
+  body: "text-sm",
 
-  fontSans: "font-sans",
-  fontMono: "font-mono",
+  muted: "text-gray-700",
 } as const;
 
 export type TypographyToken = keyof typeof typography;
