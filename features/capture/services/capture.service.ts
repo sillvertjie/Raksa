@@ -1,12 +1,13 @@
-import { CaptureRepository } from "../repositories/capture.repository";
-
 import type { CreateCaptureDTO } from "../dto/create-capture.dto";
 import type { UpdateCaptureDTO } from "../dto/update-capture.dto";
 
+import { CaptureRepository } from "../repositories/capture.repository";
 import { validateCaptureContent } from "../validators/capture.validator";
 
 export class CaptureService {
-  private repository = new CaptureRepository();
+  constructor(
+    private readonly repository = new CaptureRepository()
+  ) {}
 
   async create(dto: CreateCaptureDTO) {
     const content = validateCaptureContent(dto.content);
