@@ -1,5 +1,10 @@
 import React from "react";
 
+import {
+  radius,
+  spacing,
+} from "@/lib/design-system";
+
 interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   loading?: boolean;
@@ -18,9 +23,16 @@ export default function Button({
     <button
       {...props}
       disabled={disabled || loading}
-      className={`rounded-lg bg-black px-4 py-2 text-white disabled:cursor-not-allowed disabled:opacity-50 ${
-        className ?? ""
-      }`}
+      className={`
+        ${radius.lg}
+        ${spacing.buttonX}
+        ${spacing.buttonY}
+        bg-black
+        text-white
+        disabled:cursor-not-allowed
+        disabled:opacity-50
+        ${className ?? ""}
+      `}
     >
       {loading ? loadingText : children}
     </button>
