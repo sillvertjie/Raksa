@@ -3,6 +3,7 @@
 import { SearchSection } from "@/features/search/components";
 
 import { useCaptures } from "@/features/capture/hooks";
+import { useNotes } from "@/features/notes/hooks";
 
 import {
   CaptureSection,
@@ -16,15 +17,27 @@ import {
 export default function DashboardClient() {
   const {
     captures,
-    loading,
+    loading: capturesLoading,
     creating,
     updatingId,
     deletingId,
-    error,
+    error: capturesError,
     createCapture,
     updateCapture,
     deleteCapture,
   } = useCaptures();
+
+  const {
+    notes,
+    loading: notesLoading,
+    creating: notesCreating,
+    updatingId: notesUpdatingId,
+    deletingId: notesDeletingId,
+    error: notesError,
+    createNote,
+    updateNote,
+    deleteNote,
+  } = useNotes();
 
   return (
     <>
@@ -45,8 +58,8 @@ export default function DashboardClient() {
 
       <CaptureSection
         captures={captures}
-        loading={loading}
-        error={error}
+        loading={capturesLoading}
+        error={capturesError}
         updatingId={updatingId}
         deletingId={deletingId}
         onDelete={deleteCapture}
@@ -57,7 +70,17 @@ export default function DashboardClient() {
         }}
       />
 
-      <NotesSection />
+      <NotesSection
+        notes={notes}
+        loading={notesLoading}
+        creating={notesCreating}
+        updatingId={notesUpdatingId}
+        deletingId={notesDeletingId}
+        error={notesError}
+        onCreate={createNote}
+        onUpdate={updateNote}
+        onDelete={deleteNote}
+      />
 
       <FutureModulesSection />
     </>
