@@ -1,4 +1,4 @@
-import Container from "@/components/ui/layout/Container";
+import { Container } from "@/components/ui";
 
 import DashboardClient from "@/components/dashboard/DashboardClient";
 

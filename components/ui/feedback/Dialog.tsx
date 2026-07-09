@@ -1,4 +1,4 @@
-import Button from "@/components/ui/actions/Button";
+import { Button } from "@/components/ui";
 
 interface DialogProps {
   open: boolean;
