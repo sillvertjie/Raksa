@@ -1,6 +1,7 @@
 import React from "react";
 
 import {
+  colors,
   radius,
   spacing,
 } from "@/lib/design-system";
@@ -16,6 +17,8 @@ export default function Input({
       {...props}
       className={`
         w-full
+        ${colors.surface}
+        ${colors.border}
         border
         ${radius.lg}
         ${spacing.input}

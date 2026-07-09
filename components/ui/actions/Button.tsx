@@ -1,6 +1,7 @@
 import React from "react";
 
 import {
+  colors,
   radius,
   spacing,
 } from "@/lib/design-system";
@@ -24,11 +25,10 @@ export default function Button({
       {...props}
       disabled={disabled || loading}
       className={`
+        ${colors.buttonPrimary}
         ${radius.lg}
         ${spacing.buttonX}
         ${spacing.buttonY}
-        bg-black
-        text-white
         disabled:cursor-not-allowed
         disabled:opacity-50
         ${className ?? ""}

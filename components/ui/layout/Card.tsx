@@ -1,6 +1,7 @@
 import React from "react";
 
 import {
+  colors,
   radius,
   spacing,
 } from "@/lib/design-system";
@@ -15,6 +16,8 @@ export default function Card({
     <div
       {...props}
       className={`
+        ${colors.surface}
+        ${colors.border}
         border
         ${radius.lg}
         ${spacing.cardPaddingSm}

@@ -1,11 +1,15 @@
+import { colors } from "./colors";
+
 export const typography = {
-  heading: "text-xl font-bold",
+  heading: `text-xl font-bold ${colors.textPrimary}`,
 
-  sectionTitle: "text-lg font-semibold",
+  sectionTitle: `text-lg font-semibold ${colors.textPrimary}`,
 
-  body: "text-sm",
+  body: `text-sm ${colors.textSecondary}`,
 
-  muted: "text-gray-700",
+  muted: colors.textMuted,
+
+  statistic: `text-3xl font-bold ${colors.textPrimary}`,
 } as const;
 
 export type TypographyToken = keyof typeof typography;
