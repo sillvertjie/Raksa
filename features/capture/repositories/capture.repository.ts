@@ -1,11 +1,12 @@
 import { prisma } from "@/lib/prisma";
 
+import type { CreateCaptureDTO } from "../dto/create-capture.dto";
+import type { UpdateCaptureDTO } from "../dto/update-capture.dto";
+
 export class CaptureRepository {
-  async create(content: string) {
+  async create(data: CreateCaptureDTO) {
     return prisma.capture.create({
-      data: {
-        content,
-      },
+      data,
     });
   }
 
@@ -17,14 +18,15 @@ export class CaptureRepository {
     });
   }
 
-  async update(id: string, content: string) {
+  async update(
+    id: string,
+    data: UpdateCaptureDTO
+  ) {
     return prisma.capture.update({
       where: {
         id,
       },
-      data: {
-        content,
-      },
+      data,
     });
   }
 

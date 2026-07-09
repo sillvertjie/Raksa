@@ -10,9 +10,11 @@ export class CaptureService {
   ) {}
 
   async create(dto: CreateCaptureDTO) {
-    const content = validateCaptureContent(dto.content);
+    const validatedData = {
+      content: validateCaptureContent(dto.content),
+    };
 
-    return this.repository.create(content);
+    return this.repository.create(validatedData);
   }
 
   async findAll() {
@@ -27,11 +29,13 @@ export class CaptureService {
       throw new Error("Capture ID is required.");
     }
 
-    const content = validateCaptureContent(dto.content);
+    const validatedData = {
+      content: validateCaptureContent(dto.content),
+    };
 
     return this.repository.update(
       id,
-      content
+      validatedData
     );
   }
 
