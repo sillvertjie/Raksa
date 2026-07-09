@@ -1,35 +1,43 @@
-import { Card } from "@/components/ui/layout";
-import { Heading, Text } from "@/components/ui/typography";
+import {
+  Card,
+  Heading,
+  Text,
+} from "@/components/ui";
 
 const modules = [
   {
     title: "Knowledge Management",
-    description: "Notes, Collections, dan Tags.",
+    description:
+      "Notes, Collections, dan Tags.",
   },
   {
     title: "AI Processing",
-    description: "Workspace AI, Summary, dan Insight.",
+    description:
+      "Workspace AI, Summary, dan Insight.",
   },
   {
     title: "Search",
-    description: "Global Search dan Filter.",
+    description:
+      "Global Search dan Filter.",
   },
   {
     title: "Analytics",
-    description: "Dashboard Statistics dan Activity Overview.",
+    description:
+      "Dashboard Statistics dan Activity Overview.",
   },
 ];
 
 export function FutureModulesSection() {
   return (
     <section className="mt-10">
-            <Heading>
+      <Heading>
         Future Modules
-        </Heading>
+      </Heading>
 
       <Text className="mt-2 text-slate-600">
-        Modul berikut merupakan bagian dari roadmap MVP dan akan
-        dikembangkan pada fase selanjutnya.
+        Modul berikut merupakan bagian dari
+        roadmap MVP dan akan dikembangkan
+        pada fase selanjutnya.
       </Text>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -39,8 +47,8 @@ export function FutureModulesSection() {
             className="border border-dashed border-slate-300"
           >
             <Heading className="text-lg">
-                {module.title}
-                </Heading>
+              {module.title}
+            </Heading>
 
             <Text className="mt-2 text-sm text-slate-500">
               {module.description}
