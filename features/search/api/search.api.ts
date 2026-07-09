@@ -1,22 +1,18 @@
+import { apiFetch } from "@/lib/api/client";
+
 import type { SearchDTO } from "../dto/search.dto";
 import type { SearchResult } from "../types/search";
 
 const API_URL = "/api/search";
 
-export async function search(
+export function search(
   dto: SearchDTO
-): Promise<SearchResult> {
-  const response = await fetch(API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(dto),
+) {
+  const params = new URLSearchParams({
+    query: dto.query,
   });
 
-  if (!response.ok) {
-    throw new Error("Failed to search.");
-  }
-
-  return response.json();
+  return apiFetch<SearchResult>(
+    `${API_URL}?${params.toString()}`
+  );
 }
