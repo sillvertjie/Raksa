@@ -1,12 +1,26 @@
 import React from "react";
 
+import {
+  radius,
+  spacing,
+} from "@/lib/design-system";
+
 type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
-export default function Input(props: InputProps) {
+export default function Input({
+  className,
+  ...props
+}: InputProps) {
   return (
     <input
       {...props}
-      className={`w-full rounded-lg border p-3 ${props.className ?? ""}`}
+      className={`
+        w-full
+        border
+        ${radius.lg}
+        ${spacing.input}
+        ${className ?? ""}
+      `}
     />
   );
 }

@@ -10,8 +10,7 @@ export const spacing = {
   cardPadding: "p-6",
   cardPaddingSm: "p-4",
 
-  inputX: "px-3",
-  inputY: "py-2",
+  input: "p-3",
 
   buttonX: "px-4",
   buttonY: "py-2",
