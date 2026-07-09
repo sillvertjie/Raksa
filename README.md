@@ -1,36 +1,223 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Raksa Workspace
 
-## Getting Started
+Raksa is an AI Workspace platform built gradually with a clean architecture approach.
 
-First, run the development server:
+The goal of Raksa is to provide a scalable workspace foundation that can evolve into an AI-powered productivity environment.
+
+---
+
+## Tech Stack
+
+* Next.js
+* React
+* TypeScript
+* Prisma ORM
+* PostgreSQL
+* NextAuth
+* Tailwind CSS
+* Vitest
+
+---
+
+## Project Structure
+
+Raksa uses a feature-based clean architecture.
+
+```
+app
+ └── api
+     └── route handlers
+
+features
+ ├── capture
+ ├── notes
+ ├── search
+ └── summary
+
+components
+ ├── ui
+ └── sections
+
+lib
+ ├── api
+ ├── auth
+ ├── config
+ ├── errors
+ ├── prisma
+ └── design-system
+```
+
+Architecture flow:
+
+```
+DTO
+ ↓
+Validator
+ ↓
+Repository
+ ↓
+Service
+ ↓
+API Route
+ ↓
+API Client
+ ↓
+Custom Hook
+ ↓
+UI Component
+```
+
+---
+
+## Development Setup
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Create environment file:
+
+```bash
+.env
+```
+
+Example:
+
+```env
+DATABASE_URL=
+AUTH_SECRET=
+```
+
+---
+
+## Database Setup
+
+Generate Prisma client:
+
+```bash
+npx prisma generate
+```
+
+Run database migration:
+
+```bash
+npx prisma migrate dev
+```
+
+---
+
+## Development Commands
+
+Start development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Build production:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Run lint:
 
-## Learn More
+```bash
+npm run lint
+```
 
-To learn more about Next.js, take a look at the following resources:
+Run TypeScript validation:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run typecheck
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Run tests:
 
-## Deploy on Vercel
+```bash
+npm run test
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Run complete validation:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run check
+```
+
+---
+
+## Testing
+
+Raksa uses Vitest as the testing foundation.
+
+Test files:
+
+```
+*.test.ts
+*.test.tsx
+```
+
+Run:
+
+```bash
+npm run test
+```
+
+---
+
+## Environment Configuration
+
+Environment variables are managed through:
+
+```
+lib/config
+```
+
+Sensitive configuration should remain inside `.env` files and never be committed.
+
+---
+
+## Roadmap
+
+Current development phase:
+
+```
+Phase 3 — Infrastructure Enhancement
+```
+
+Completed:
+
+* Foundation Setup
+* Workspace MVP
+* Database Foundation
+* Authentication Foundation
+* Testing Foundation
+* Error Handling
+* Configuration Management
+* Performance Review
+* Developer Experience
+
+Future:
+
+* AI Workspace Foundation
+* AI Features
+* Workspace Expansion
+* Collaboration
+* Production Deployment
+
+---
+
+## Development Principle
+
+Raksa prioritizes:
+
+* Maintainability
+* Scalability
+* Readability
+* Clean Architecture
+* Consistent Engineering Practices
+
+```
+```
