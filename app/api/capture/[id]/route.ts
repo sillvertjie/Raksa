@@ -1,3 +1,5 @@
+import { handleApiError } from "@/lib/api/errors/handle-api-error";
+
 import { CaptureService } from "@/features/capture/services/capture.service";
 
 const service = new CaptureService();
@@ -25,15 +27,7 @@ export async function PATCH(
 
     return Response.json(capture);
   } catch (error) {
-    const message =
-      error instanceof Error
-        ? error.message
-        : "Internal Server Error";
-
-    return Response.json(
-      { message },
-      { status: 400 }
-    );
+    return handleApiError(error);
   }
 }
 
@@ -55,18 +49,6 @@ export async function DELETE(
       }
     );
   } catch (error) {
-    const message =
-      error instanceof Error
-        ? error.message
-        : "Internal Server Error";
-
-    return Response.json(
-      {
-        message,
-      },
-      {
-        status: 400,
-      }
-    );
+    return handleApiError(error);
   }
 }

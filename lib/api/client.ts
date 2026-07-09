@@ -14,14 +14,13 @@ export async function apiFetch<T>(
     let message = `Request failed (${response.status}).`;
 
     try {
-      const error =
-        await response.json();
+      const error = await response.json();
 
       if (
-        error &&
-        typeof error.message === "string"
+        error?.error?.message &&
+        typeof error.error.message === "string"
       ) {
-        message = error.message;
+        message = error.error.message;
       }
     } catch {
       // Ignore invalid JSON response.

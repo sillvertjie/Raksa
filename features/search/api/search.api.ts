@@ -8,11 +8,11 @@ const API_URL = "/api/search";
 export function search(
   dto: SearchDTO
 ) {
-  const params = new URLSearchParams({
-    query: dto.query,
-  });
-
   return apiFetch<SearchResult>(
-    `${API_URL}?${params.toString()}`
+    API_URL,
+    {
+      method: "POST",
+      body: JSON.stringify(dto),
+    }
   );
 }
