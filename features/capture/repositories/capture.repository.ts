@@ -4,14 +4,23 @@ import type { CreateCaptureDTO } from "../dto/create-capture.dto";
 import type { UpdateCaptureDTO } from "../dto/update-capture.dto";
 
 export class CaptureRepository {
-  async create(data: CreateCaptureDTO) {
+  async create(
+    userId: string,
+    data: CreateCaptureDTO
+  ) {
     return prisma.capture.create({
-      data,
+      data: {
+        ...data,
+        userId,
+      },
     });
   }
 
-  async findAll() {
+  async findAll(userId: string) {
     return prisma.capture.findMany({
+      where: {
+        userId,
+      },
       orderBy: {
         createdAt: "desc",
       },
@@ -20,20 +29,26 @@ export class CaptureRepository {
 
   async update(
     id: string,
+    userId: string,
     data: UpdateCaptureDTO
   ) {
-    return prisma.capture.update({
+    return prisma.capture.updateMany({
       where: {
         id,
+        userId,
       },
       data,
     });
   }
 
-  async delete(id: string) {
-    return prisma.capture.delete({
+  async delete(
+    id: string,
+    userId: string
+  ) {
+    return prisma.capture.deleteMany({
       where: {
         id,
+        userId,
       },
     });
   }

@@ -11,20 +11,29 @@ export class CaptureService {
     private readonly repository = new CaptureRepository()
   ) {}
 
-  async create(dto: CreateCaptureDTO) {
+  async create(
+    userId: string,
+    dto: CreateCaptureDTO
+  ) {
     const validatedData = {
       content: validateCaptureContent(dto.content),
     };
 
-    return this.repository.create(validatedData);
+    return this.repository.create(
+      userId,
+      validatedData
+    );
   }
 
-  async findAll() {
-    return this.repository.findAll();
+  async findAll(
+    userId: string
+  ) {
+    return this.repository.findAll(userId);
   }
 
   async update(
     id: string,
+    userId: string,
     dto: UpdateCaptureDTO
   ) {
     if (!id.trim()) {
@@ -41,11 +50,15 @@ export class CaptureService {
 
     return this.repository.update(
       id,
+      userId,
       validatedData
     );
   }
 
-  async delete(id: string) {
+  async delete(
+    id: string,
+    userId: string
+  ) {
     if (!id.trim()) {
       throw new AppError(
         ERROR_CODES.VALIDATION_ERROR,
@@ -54,6 +67,9 @@ export class CaptureService {
       );
     }
 
-    return this.repository.delete(id);
+    return this.repository.delete(
+      id,
+      userId
+    );
   }
 }

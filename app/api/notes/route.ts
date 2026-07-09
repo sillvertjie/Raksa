@@ -1,30 +1,76 @@
+import { auth } from "@/lib/auth";
 import { NoteService } from "@/features/notes/services/note.service";
 
 const service = new NoteService();
 
 export async function GET() {
   try {
-    const notes = await service.findAll();
+    const session = await auth();
+
+    if (!session?.user?.id) {
+      return Response.json(
+        {
+          message: "Unauthorized.",
+        },
+        {
+          status: 401,
+        }
+      );
+    }
+
+    const notes = await service.findAll(
+      session.user.id
+    );
 
     return Response.json(notes);
+
   } catch {
     return Response.json(
-      { message: "Failed to load notes." },
-      { status: 500 }
+      {
+        message: "Failed to load notes.",
+      },
+      {
+        status: 500,
+      }
     );
   }
 }
 
-export async function POST(request: Request) {
+
+export async function POST(
+  request: Request
+) {
   try {
+    const session = await auth();
+
+    if (!session?.user?.id) {
+      return Response.json(
+        {
+          message: "Unauthorized.",
+        },
+        {
+          status: 401,
+        }
+      );
+    }
+
     const body = await request.json();
 
-    const note = await service.create({
-      title: body.title,
-      content: body.content,
-    });
+    const note = await service.create(
+      session.user.id,
+      {
+        title: body.title,
+        content: body.content,
+      }
+    );
 
-    return Response.json(note, { status: 201 });
+    return Response.json(
+      note,
+      {
+        status: 201,
+      }
+    );
+
   } catch (error) {
     const message =
       error instanceof Error
@@ -32,8 +78,12 @@ export async function POST(request: Request) {
         : "Internal Server Error";
 
     return Response.json(
-      { message },
-      { status: 400 }
+      {
+        message,
+      },
+      {
+        status: 400,
+      }
     );
   }
 }

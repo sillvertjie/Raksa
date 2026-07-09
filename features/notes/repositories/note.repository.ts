@@ -1,43 +1,66 @@
 import { prisma } from "@/lib/prisma";
-import { CreateNoteDTO } from "../dto/create-note.dto";
-import { UpdateNoteDTO } from "../dto/update-note.dto";
+
+import type { CreateNoteDTO } from "../dto/create-note.dto";
+import type { UpdateNoteDTO } from "../dto/update-note.dto";
 
 export class NoteRepository {
-  async create(data: CreateNoteDTO) {
+  async create(
+    userId: string,
+    data: CreateNoteDTO
+  ) {
     return prisma.note.create({
-      data,
+      data: {
+        ...data,
+        userId,
+      },
     });
   }
 
-  async findAll() {
+  async findAll(userId: string) {
     return prisma.note.findMany({
+      where: {
+        userId,
+      },
       orderBy: {
         createdAt: "desc",
       },
     });
   }
 
-  async findById(id: string) {
-    return prisma.note.findUnique({
+  async findById(
+    id: string,
+    userId: string
+  ) {
+    return prisma.note.findFirst({
       where: {
         id,
+        userId,
       },
     });
   }
 
-  async update(id: string, data: UpdateNoteDTO) {
-    return prisma.note.update({
+  async update(
+    id: string,
+    userId: string,
+    data: UpdateNoteDTO
+  ) {
+    return prisma.note.updateMany({
       where: {
         id,
+        userId,
       },
       data,
     });
   }
 
-  async delete(id: string) {
-    return prisma.note.delete({
+  async delete(
+    id: string,
+    userId: string
+  ) {
+    return prisma.note.deleteMany({
       where: {
         id,
+        userId,
       },
     });
   }
