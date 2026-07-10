@@ -1,4 +1,10 @@
 import { auth } from "@/lib/auth";
+import { AppError, ERROR_CODES } from "@/lib/errors";
+import {
+  handleApiError,
+  handleApiSuccess,
+} from "@/lib/api/errors";
+
 import { NoteService } from "@/features/notes/services/note.service";
 
 const service = new NoteService();
@@ -9,7 +15,6 @@ interface RouteContext {
   }>;
 }
 
-
 export async function GET(
   request: Request,
   { params }: RouteContext
@@ -18,13 +23,10 @@ export async function GET(
     const session = await auth();
 
     if (!session?.user?.id) {
-      return Response.json(
-        {
-          message: "Unauthorized.",
-        },
-        {
-          status: 401,
-        }
+      throw new AppError(
+        ERROR_CODES.UNAUTHORIZED,
+        "Unauthorized.",
+        401
       );
     }
 
@@ -35,23 +37,10 @@ export async function GET(
       session.user.id
     );
 
-    return Response.json(note);
+    return handleApiSuccess(note);
 
   } catch (error) {
-
-    const message =
-      error instanceof Error
-        ? error.message
-        : "Internal Server Error";
-
-    return Response.json(
-      {
-        message,
-      },
-      {
-        status: 400,
-      }
-    );
+    return handleApiError(error);
   }
 }
 
@@ -64,17 +53,15 @@ export async function PATCH(
     const session = await auth();
 
     if (!session?.user?.id) {
-      return Response.json(
-        {
-          message: "Unauthorized.",
-        },
-        {
-          status: 401,
-        }
+      throw new AppError(
+        ERROR_CODES.UNAUTHORIZED,
+        "Unauthorized.",
+        401
       );
     }
 
     const { id } = await params;
+
     const body = await request.json();
 
     const note = await service.update(
@@ -86,23 +73,10 @@ export async function PATCH(
       }
     );
 
-    return Response.json(note);
+    return handleApiSuccess(note);
 
   } catch (error) {
-
-    const message =
-      error instanceof Error
-        ? error.message
-        : "Internal Server Error";
-
-    return Response.json(
-      {
-        message,
-      },
-      {
-        status: 400,
-      }
-    );
+    return handleApiError(error);
   }
 }
 
@@ -115,13 +89,10 @@ export async function DELETE(
     const session = await auth();
 
     if (!session?.user?.id) {
-      return Response.json(
-        {
-          message: "Unauthorized.",
-        },
-        {
-          status: 401,
-        }
+      throw new AppError(
+        ERROR_CODES.UNAUTHORIZED,
+        "Unauthorized.",
+        401
       );
     }
 
@@ -132,26 +103,11 @@ export async function DELETE(
       session.user.id
     );
 
-    return Response.json(
-      {
-        message: "Note deleted successfully.",
-      }
-    );
+    return handleApiSuccess({
+      message: "Note deleted successfully.",
+    });
 
   } catch (error) {
-
-    const message =
-      error instanceof Error
-        ? error.message
-        : "Internal Server Error";
-
-    return Response.json(
-      {
-        message,
-      },
-      {
-        status: 400,
-      }
-    );
+    return handleApiError(error);
   }
 }
