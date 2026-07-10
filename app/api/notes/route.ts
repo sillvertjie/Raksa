@@ -1,4 +1,8 @@
 import { auth } from "@/lib/auth";
+import { AppError, ERROR_CODES } from "@/lib/errors";
+import { handleApiError } from "@/lib/api/errors/handle-api-error";
+import { handleApiSuccess } from "@/lib/api/errors/handle-api-success";
+
 import { NoteService } from "@/features/notes/services/note.service";
 
 const service = new NoteService();
@@ -8,34 +12,20 @@ export async function GET() {
     const session = await auth();
 
     if (!session?.user?.id) {
-      return Response.json(
-        {
-          message: "Unauthorized.",
-        },
-        {
-          status: 401,
-        }
+      throw new AppError(
+        ERROR_CODES.UNAUTHORIZED,
+        "Unauthorized.",
+        401
       );
     }
 
-    const notes = await service.findAll(
-      session.user.id
-    );
+    const notes = await service.findAll(session.user.id);
 
-    return Response.json(notes);
-
-  } catch {
-    return Response.json(
-      {
-        message: "Failed to load notes.",
-      },
-      {
-        status: 500,
-      }
-    );
+    return handleApiSuccess(notes);
+  } catch (error) {
+    return handleApiError(error);
   }
 }
-
 
 export async function POST(
   request: Request
@@ -44,13 +34,10 @@ export async function POST(
     const session = await auth();
 
     if (!session?.user?.id) {
-      return Response.json(
-        {
-          message: "Unauthorized.",
-        },
-        {
-          status: 401,
-        }
+      throw new AppError(
+        ERROR_CODES.UNAUTHORIZED,
+        "Unauthorized.",
+        401
       );
     }
 
@@ -64,26 +51,8 @@ export async function POST(
       }
     );
 
-    return Response.json(
-      note,
-      {
-        status: 201,
-      }
-    );
-
+    return handleApiSuccess(note, 201);
   } catch (error) {
-    const message =
-      error instanceof Error
-        ? error.message
-        : "Internal Server Error";
-
-    return Response.json(
-      {
-        message,
-      },
-      {
-        status: 400,
-      }
-    );
+    return handleApiError(error);
   }
 }
