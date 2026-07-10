@@ -1,3 +1,6 @@
+import { Conversation } from "../models/conversation.model";
+import { ConversationMessage } from "../models/conversation-message.model";
+
 export interface ConversationManager {
   create(): Promise<Conversation>;
 
@@ -5,13 +8,4 @@ export interface ConversationManager {
     conversationId: string,
     message: ConversationMessage
   ): Promise<void>;
-}
-
-export interface Conversation {
-  id: string;
-}
-
-export interface ConversationMessage {
-  role: "user" | "assistant";
-  content: string;
 }
