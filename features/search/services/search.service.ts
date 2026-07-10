@@ -4,10 +4,14 @@ import { validateSearchDTO } from "../validators/search.validator";
 
 export class SearchService {
   constructor(
-    private readonly repository = new SearchRepository()
+    private readonly repository =
+      new SearchRepository()
   ) {}
 
-  async search(dto: SearchDTO) {
+  async search(
+    userId: string,
+    dto: SearchDTO
+  ) {
     const error = validateSearchDTO(dto);
 
     if (error) {
@@ -16,6 +20,9 @@ export class SearchService {
 
     const query = dto.query.trim();
 
-    return this.repository.search(query);
+    return this.repository.search(
+      userId,
+      query
+    );
   }
 }

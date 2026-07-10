@@ -1,20 +1,32 @@
+import { auth } from "@/lib/auth";
 import { SummaryService } from "@/features/summary/services/summary.service";
+
+import { AppError, ERROR_CODES } from "@/lib/errors";
+import {
+  handleApiError,
+  handleApiSuccess,
+} from "@/lib/api/errors";
 
 const service = new SummaryService();
 
 export async function GET() {
   try {
-    const summary = await service.getSummary();
+    const session = await auth();
 
-    return Response.json(summary);
-  } catch {
-    return Response.json(
-      {
-        message: "Failed to load summary.",
-      },
-      {
-        status: 500,
-      }
+    if (!session?.user?.id) {
+      throw new AppError(
+        ERROR_CODES.UNAUTHORIZED,
+        "Unauthorized.",
+        401
+      );
+    }
+
+    const summary = await service.getSummary(
+      session.user.id
     );
+
+    return handleApiSuccess(summary);
+  } catch (error) {
+    return handleApiError(error);
   }
 }

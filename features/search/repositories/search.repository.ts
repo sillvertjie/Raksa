@@ -1,10 +1,14 @@
 import { prisma } from "@/lib/prisma";
 
 export class SearchRepository {
-  async search(query: string) {
+  async search(
+    userId: string,
+    query: string
+  ) {
     const [notes, captures] = await Promise.all([
       prisma.note.findMany({
         where: {
+          userId,
           OR: [
             {
               title: {
@@ -27,6 +31,7 @@ export class SearchRepository {
 
       prisma.capture.findMany({
         where: {
+          userId,
           content: {
             contains: query,
             mode: "insensitive",
