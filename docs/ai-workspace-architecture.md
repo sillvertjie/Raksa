@@ -320,20 +320,27 @@ AI Service tidak menyimpan logic detail setiap proses.
 
 # 11. Folder Blueprint
 
-Lokasi AI Workspace:
-src/
+# 11. Folder Blueprint
 
-├── ai/
-│
+Lokasi AI Workspace:
+
+ai/
+
+Project structure:
+
 ├── app/
 ├── components/
-├── hooks/
-└── lib/
+├── features/
+├── ai/
+├── lib/
+├── prisma/
+├── tests/
+└── types/
 
 
 Struktur AI:
 
-src/ai/
+ai/
 
 ├── provider/
 │ ├── contracts/
