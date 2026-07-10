@@ -47,16 +47,38 @@ Tujuan utama:
 # 3. AI Workspace Module Overview
 
 AI Workspace terdiri dari beberapa modul utama:
+
 AI Workspace
 
-├── Provider
-├── Prompt
-├── Context
-├── Conversation
-├── Service
-└── Storage
+├── AI Core Layer
+│
+│   ├── Provider
+│   ├── Prompt
+│   ├── Context
+│   ├── Conversation
+│   ├── Service
+│   └── Storage
+│
+└── AI Feature Layer
+    │
+    ├── AI Chat
+    ├── AI Note Assistant
+    ├── AI Search
+    ├── AI Content Generation
+    ├── AI Summary
+    └── AI Productivity Tools
 
 Setiap modul memiliki tanggung jawab yang berbeda.
+
+Feature Layer dapat menggunakan AI Core.
+
+AI Core tidak boleh bergantung kepada Feature Layer.
+
+Conversation merupakan capability umum untuk seluruh interaksi AI pada Raksa.
+
+AI Core Layer bertanggung jawab menyediakan kemampuan dasar AI.
+
+AI Feature Layer bertanggung jawab menyediakan capability AI yang digunakan pengguna.
 
 ---
 

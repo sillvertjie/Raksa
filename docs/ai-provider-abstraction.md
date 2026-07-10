@@ -25,6 +25,9 @@ Raksa menggunakan AI Provider Contract dengan Adapter Pattern.
 
 Architecture boundary:
 
+AI Feature Layer
+        |
+        v
 AI Service Layer
         |
         v
@@ -36,6 +39,11 @@ Provider Adapter
         v
 External AI Provider
 
+AI Feature Layer dapat menggunakan AI Core Layer melalui interface contract.
+
+AI Core Layer tidak boleh memiliki dependency terhadap AI Feature Layer.
+
+Seluruh komunikasi dengan provider harus melalui AI Service Layer.
 
 AI Service hanya berkomunikasi melalui contract dan tidak mengetahui detail implementasi provider.
 
