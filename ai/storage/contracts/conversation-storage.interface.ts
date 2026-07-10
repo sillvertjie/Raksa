@@ -1,11 +1,12 @@
+import { Conversation } from "@/ai/conversation/models/conversation.model";
+
 export interface ConversationStorage {
-  save(conversation: StoredConversation): Promise<void>;
+  save(conversation: Conversation): Promise<void>;
 
-  findById(
-    id: string
-  ): Promise<StoredConversation | null>;
-}
+  findById(id: string): Promise<Conversation | null>;
 
-export interface StoredConversation {
-  id: string;
+  delete(id: string): Promise<void>;
+
+  exists(id: string): Promise<boolean>;
+
 }
