@@ -19,7 +19,10 @@ export async function PATCH(
     if (!session?.user?.id) {
       return Response.json(
         {
-          message: "Unauthorized.",
+          success: false,
+          error: {
+            message: "Unauthorized.",
+          },
         },
         {
           status: 401,
@@ -38,8 +41,10 @@ export async function PATCH(
       }
     );
 
-    return Response.json(capture);
-
+    return Response.json({
+      success: true,
+      data: capture,
+    });
   } catch (error) {
     const message =
       error instanceof Error
@@ -48,7 +53,10 @@ export async function PATCH(
 
     return Response.json(
       {
-        message,
+        success: false,
+        error: {
+          message,
+        },
       },
       {
         status: 400,
@@ -56,7 +64,6 @@ export async function PATCH(
     );
   }
 }
-
 
 export async function DELETE(
   request: Request,
@@ -68,7 +75,10 @@ export async function DELETE(
     if (!session?.user?.id) {
       return Response.json(
         {
-          message: "Unauthorized.",
+          success: false,
+          error: {
+            message: "Unauthorized.",
+          },
         },
         {
           status: 401,
@@ -83,12 +93,10 @@ export async function DELETE(
       session.user.id
     );
 
-    return Response.json(
-      {
-        message: "Capture deleted successfully.",
-      }
-    );
-
+    return Response.json({
+      success: true,
+      data: null,
+    });
   } catch (error) {
     const message =
       error instanceof Error
@@ -97,7 +105,10 @@ export async function DELETE(
 
     return Response.json(
       {
-        message,
+        success: false,
+        error: {
+          message,
+        },
       },
       {
         status: 400,

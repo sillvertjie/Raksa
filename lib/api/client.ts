@@ -10,20 +10,16 @@ export async function apiFetch<T>(
     ...init,
   });
 
+  const result = await response.json();
+
   if (!response.ok) {
     let message = `Request failed (${response.status}).`;
 
-    try {
-      const error = await response.json();
-
-      if (
-        error?.error?.message &&
-        typeof error.error.message === "string"
-      ) {
-        message = error.error.message;
-      }
-    } catch {
-      // Ignore invalid JSON response.
+    if (
+      result?.error?.message &&
+      typeof result.error.message === "string"
+    ) {
+      message = result.error.message;
     }
 
     throw new Error(message);
@@ -33,5 +29,20 @@ export async function apiFetch<T>(
     return undefined as T;
   }
 
-  return response.json() as Promise<T>;
+  if (
+    !result ||
+    typeof result !== "object" ||
+    !("success" in result)
+  ) {
+    throw new Error("Invalid API response.");
+  }
+
+  if (!result.success) {
+    throw new Error(
+      result.error?.message ??
+        "Unknown API error."
+    );
+  }
+
+  return result.data as T;
 }

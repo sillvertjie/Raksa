@@ -10,7 +10,10 @@ export async function GET() {
     if (!session?.user?.id) {
       return Response.json(
         {
-          message: "Unauthorized.",
+          success: false,
+          error: {
+            message: "Unauthorized.",
+          },
         },
         {
           status: 401,
@@ -22,11 +25,17 @@ export async function GET() {
       session.user.id
     );
 
-    return Response.json(captures);
+    return Response.json({
+      success: true,
+      data: captures,
+    });
   } catch {
     return Response.json(
       {
-        message: "Failed to load captures.",
+        success: false,
+        error: {
+          message: "Failed to load captures.",
+        },
       },
       {
         status: 500,
@@ -44,7 +53,10 @@ export async function POST(
     if (!session?.user?.id) {
       return Response.json(
         {
-          message: "Unauthorized.",
+          success: false,
+          error: {
+            message: "Unauthorized.",
+          },
         },
         {
           status: 401,
@@ -62,7 +74,10 @@ export async function POST(
     );
 
     return Response.json(
-      capture,
+      {
+        success: true,
+        data: capture,
+      },
       {
         status: 201,
       }
@@ -75,7 +90,10 @@ export async function POST(
 
     return Response.json(
       {
-        message,
+        success: false,
+        error: {
+          message,
+        },
       },
       {
         status: 400,
