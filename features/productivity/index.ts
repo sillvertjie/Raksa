@@ -12,3 +12,7 @@ export type { ProductivityService } from "./services/productivity.service";
 export type { ProductivityContext } from "./context/productivity-context.builder";
 
 export { buildProductivityContext } from "./context/productivity-context.builder";
+
+export type { ProductivityProcessor } from "./processors/productivity.processor";
+
+export { DefaultProductivityProcessor } from "./processors/productivity.processor";
