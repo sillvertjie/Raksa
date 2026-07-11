@@ -5,6 +5,7 @@ import type { SummarizationRequest } from "../contracts/summarization-request";
 import type { SummarizationResponse } from "../contracts/summarization-response";
 
 import { SummarizationAIMapper } from "../mappers/summarization-ai.mapper";
+import { SummarizationResponseMapper } from "../mappers/summarization-response.mapper";
 
 export class DefaultSummarizationService
   implements SummarizationService
@@ -19,10 +20,11 @@ export class DefaultSummarizationService
     const aiRequest =
       SummarizationAIMapper.toAIRequest(request);
 
-    await this.aiService.execute(aiRequest);
+    const aiResponse =
+      await this.aiService.execute(aiRequest);
 
-    return {
-      summary: "",
-    };
+    return SummarizationResponseMapper.fromAIResponse(
+      aiResponse,
+    );
   }
 }
