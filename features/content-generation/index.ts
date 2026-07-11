@@ -5,3 +5,5 @@ export * from "./services/content-generation.service";
 export * from "./validators/content-generation.validator";
 export * from "./context/content-generation-context.builder";
 export * from "./mappers/content-generation-ai.mapper";
+export * from "./services/default-content-generation.service";
+export * from "./mappers/content-generation-response.mapper";
