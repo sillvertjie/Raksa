@@ -1,25 +1,40 @@
-import type { AIRequest } from "@/ai/service/contracts/ai-service.interface";
-import type { NoteAssistantRequest } from "../contracts/note-assistant-request";
+import type {
+  ContentGenerationOptions,
+  ContentGenerationRequest,
+} from "@/features/content-generation/contracts/content-generation-request";
 
-export function mapNoteAssistantToAIRequest(
+import type { NoteAssistantRequest } from "../contracts/note-assistant-request";
+import type { NoteAssistantContext } from "../context/note-assistant-context.builder";
+
+export function mapNoteAssistantToContentGenerationRequest(
   request: NoteAssistantRequest,
-): AIRequest {
+  context: NoteAssistantContext,
+): ContentGenerationRequest {
   return {
-    message: buildNoteAssistantMessage(request),
+    content: context.content,
+    instruction:
+      request.instruction ??
+      `Perform note assistant action: ${request.action}`,
     options: {
-      action: request.action,
-      noteId: request.noteId,
-      instruction: request.instruction,
+      mode: mapActionToGenerationMode(request.action),
     },
   };
 }
 
-function buildNoteAssistantMessage(
-  request: NoteAssistantRequest,
-): string {
-  if (request.instruction) {
-    return request.instruction;
-  }
+function mapActionToGenerationMode(
+  action: NoteAssistantRequest["action"],
+): ContentGenerationOptions["mode"] {
+  switch (action) {
+    case "rewrite":
+      return "rewrite";
 
-  return `Perform note assistant action: ${request.action}`;
+    case "improve":
+      return "improve";
+
+    case "expand":
+      return "expand";
+
+    default:
+      return "rewrite";
+  }
 }
