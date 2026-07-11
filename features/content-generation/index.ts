@@ -3,3 +3,4 @@ export * from "./contracts/content-generation-response";
 export * from "./dto/content-generation.dto";
 export * from "./services/content-generation.service";
 export * from "./validators/content-generation.validator";
+export * from "./context/content-generation-context.builder";
