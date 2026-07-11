@@ -7,11 +7,14 @@ import type { ContentGenerationResponse } from "../contracts/content-generation-
 import { ContentGenerationAIMapper } from "../mappers/content-generation-ai.mapper";
 import { ContentGenerationResponseMapper } from "../mappers/content-generation-response.mapper";
 
+import type { ContentOutputManager } from "../output/contracts/content-output.manager.interface";
+
 export class DefaultContentGenerationService
   implements ContentGenerationService
 {
   constructor(
     private readonly aiService: AIService,
+    private readonly outputManager: ContentOutputManager,
   ) {}
 
   async generate(
@@ -23,8 +26,11 @@ export class DefaultContentGenerationService
     const aiResponse =
       await this.aiService.execute(aiRequest);
 
-    return ContentGenerationResponseMapper.fromAIResponse(
-      aiResponse,
-    );
+    const content =
+      ContentGenerationResponseMapper.fromAIResponse(
+        aiResponse,
+      );
+
+    return this.outputManager.manage(content);
   }
 }
