@@ -8,3 +8,6 @@ export * from "./services/default-workspace-action-planner.service";
 export * from "./approval/contracts/action-approval.interface";
 export * from "./approval/contracts/approval.service";
 export * from "./approval/implementations/default-approval.service";
+
+export * from "./execution/contracts/action-executor.interface";
+export * from "./execution/implementations/default-action-executor";
