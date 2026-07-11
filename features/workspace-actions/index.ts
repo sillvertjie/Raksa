@@ -14,3 +14,10 @@ export * from "./execution/implementations/default-action-executor";
 
 export * from "./result/contracts/action-result-manager.interface";
 export * from "./result/implementations/default-action-result.manager";
+
+export * from "./dto/execute-workspace-action.dto";
+
+export * from "./services/workspace-action.service";
+export * from "./services/default-workspace-action.service";
+
+export * from "./api/workspace-actions.api";
