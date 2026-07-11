@@ -15,3 +15,6 @@ export * from "./services/default-content-generation.service";
 
 export * from "./output/contracts/content-output.manager.interface";
 export * from "./output/implementations/default-content-output.manager";
+
+export * from "./hooks/useContentGeneration";
+export * from "./components/ContentGenerationPanel";
