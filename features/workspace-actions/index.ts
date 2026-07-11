@@ -21,3 +21,9 @@ export * from "./services/workspace-action.service";
 export * from "./services/default-workspace-action.service";
 
 export * from "./api/workspace-actions.api";
+
+export * from "./api/workspace-actions.client";
+
+export * from "./hooks/useWorkspaceActions";
+
+export * from "./components/WorkspaceActionsPanel";
