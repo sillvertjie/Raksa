@@ -25,3 +25,9 @@ export type {
 export { DefaultProductivityOutputManager } from "./output/implementations/default-productivity-output.manager";
 
 export { DefaultProductivityService } from "./services/default-productivity.service";
+
+export { processProductivity } from "./api/productivity.api";
+
+export { useProductivity } from "./hooks/useProductivity";
+
+export { ProductivityPanel } from "./components/ProductivityPanel";
