@@ -11,3 +11,6 @@ export * from "./services/note-assistant.service";
 export * from "./services/default-note-assistant.service";
 
 export * from "./suggestion/contracts/suggestion-manager.interface";
+
+export * from "./request/contracts/note-assistance-request-handler.interface";
+export * from "./request/implementations/default-note-assistance-request-handler";
