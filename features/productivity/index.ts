@@ -1,13 +1,10 @@
-/**
- * AI Productivity Feature
- *
- * Entry point for productivity-related AI capabilities.
- *
- * Current capability:
- * - AI Text Transformer
- *
- * Implementation will be added incrementally
- * through DEV-113 and following development stages.
- */
+export type {
+  ProductivityAction,
+  ProductivityRequest,
+} from "./contracts/productivity-request";
 
-export {};
+export type { ProductivityRequestDto } from "./dto/productivity-request.dto";
+
+export { validateProductivityRequest } from "./validators/productivity.validator";
+
+export type { ProductivityService } from "./services/productivity.service";
