@@ -1,3 +1,9 @@
+// request.options reserved for AI capabilities
+// such as summarization, content generation,
+// and semantic search.
+
+
+
 import type { AIProvider } from "@/ai/provider/contracts/ai-provider.interface";
 import type { ContextBuilder } from "@/ai/context/contracts/context-builder.interface";
 import type { PromptRenderer } from "@/ai/prompt/contracts/prompt-renderer.interface";

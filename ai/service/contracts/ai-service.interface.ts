@@ -5,6 +5,7 @@ export interface AIService {
 export interface AIRequest {
   message: string;
   conversationId?: string;
+  options?: Record<string, unknown>;
 }
 
 export interface AIResponse {
