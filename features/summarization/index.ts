@@ -6,3 +6,4 @@ export * from "./dto/summarize.dto";
 export * from "./validators/summarization.validator";
 export * from "./context/summarization-context.builder";
 export * from "./components/SummarizationPanel";
+export * from "./mappers/summarization-request.mapper";
