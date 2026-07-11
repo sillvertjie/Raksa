@@ -11,3 +11,6 @@ export * from "./approval/implementations/default-approval.service";
 
 export * from "./execution/contracts/action-executor.interface";
 export * from "./execution/implementations/default-action-executor";
+
+export * from "./result/contracts/action-result-manager.interface";
+export * from "./result/implementations/default-action-result.manager";
