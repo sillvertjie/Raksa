@@ -23,3 +23,5 @@ export type {
 } from "./output/contracts/productivity-output.manager.interface";
 
 export { DefaultProductivityOutputManager } from "./output/implementations/default-productivity-output.manager";
+
+export { DefaultProductivityService } from "./services/default-productivity.service";
