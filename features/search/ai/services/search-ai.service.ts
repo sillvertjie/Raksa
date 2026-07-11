@@ -5,6 +5,7 @@ import type { AISearchResponse } from "../contracts/ai-search-response";
 
 import { SearchAIMapper } from "../mappers/search-ai.mapper";
 import { SearchResponseMapper } from "../mappers/search-response.mapper";
+import { SearchResultProcessor } from "../processors/search-result.processor";
 
 export class SearchAIService {
   constructor(
@@ -22,8 +23,13 @@ export class SearchAIService {
         aiRequest,
       );
 
+    const processedResponse =
+      SearchResultProcessor.process(
+        aiResponse,
+      );
+
     return SearchResponseMapper.fromAIResponse(
-      aiResponse,
+      processedResponse,
     );
   }
 }
