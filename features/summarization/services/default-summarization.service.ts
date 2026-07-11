@@ -7,11 +7,14 @@ import type { SummarizationResponse } from "../contracts/summarization-response"
 import { SummarizationAIMapper } from "../mappers/summarization-ai.mapper";
 import { SummarizationResponseMapper } from "../mappers/summarization-response.mapper";
 
+import type { SummaryOutputManager } from "../output/contracts/summary-output.manager.interface";
+
 export class DefaultSummarizationService
   implements SummarizationService
 {
   constructor(
     private readonly aiService: AIService,
+    private readonly outputManager: SummaryOutputManager,
   ) {}
 
   async summarize(
@@ -23,8 +26,11 @@ export class DefaultSummarizationService
     const aiResponse =
       await this.aiService.execute(aiRequest);
 
-    return SummarizationResponseMapper.fromAIResponse(
-      aiResponse,
-    );
+    const summary =
+      SummarizationResponseMapper.fromAIResponse(
+        aiResponse,
+      );
+
+    return this.outputManager.manage(summary);
   }
 }
