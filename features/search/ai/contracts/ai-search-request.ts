@@ -1,4 +1,5 @@
 export interface AISearchRequest {
   query: string;
-  context: string;
+  context?: string;
+  limit?: number;
 }

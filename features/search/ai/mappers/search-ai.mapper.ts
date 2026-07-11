@@ -10,6 +10,7 @@ export class SearchAIMapper {
       message: request.query,
       options: {
         context: request.context,
+        limit: request.limit,
       },
     };
   }
