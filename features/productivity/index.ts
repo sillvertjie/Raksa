@@ -16,3 +16,10 @@ export { buildProductivityContext } from "./context/productivity-context.builder
 export type { ProductivityProcessor } from "./processors/productivity.processor";
 
 export { DefaultProductivityProcessor } from "./processors/productivity.processor";
+
+export type {
+  ProductivityOutput,
+  ProductivityOutputManager,
+} from "./output/contracts/productivity-output.manager.interface";
+
+export { DefaultProductivityOutputManager } from "./output/implementations/default-productivity-output.manager";
