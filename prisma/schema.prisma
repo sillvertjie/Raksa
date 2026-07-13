@@ -100,3 +100,15 @@ model Collection {
   parent      Collection?  @relation("CollectionHierarchy", fields: [parentId], references: [id])
   children    Collection[] @relation("CollectionHierarchy")
 }
+
+/// File metadata stored in workspace storage.
+/// Binary data is handled by StorageAdapter.
+model WorkspaceFile {
+  id          String   @id @default(cuid())
+  name        String
+  mimeType    String
+  size        Int
+  storageKey  String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
