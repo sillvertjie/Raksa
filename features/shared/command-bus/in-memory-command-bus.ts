@@ -5,7 +5,7 @@ import type { CommandHandler } from "../contracts/command-handler.interface";
 export class InMemoryCommandBus implements CommandBus {
   private readonly handlers = new Map<string, CommandHandler>();
 
-  execute(command: Command): void {
+  async execute(command: Command): Promise<unknown> {
     const handler = this.handlers.get(command.type);
 
     if (!handler) {
@@ -14,7 +14,7 @@ export class InMemoryCommandBus implements CommandBus {
       );
     }
 
-    handler.execute(command);
+    return handler.execute(command);
   }
 
   register(

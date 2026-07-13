@@ -4,5 +4,5 @@ export interface QueryHandler<
   TQuery extends Query = Query,
   TResult = unknown,
 > {
-  execute(query: TQuery): TResult;
+  execute(query: TQuery): Promise<TResult>;
 }

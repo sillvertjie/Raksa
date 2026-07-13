@@ -2,7 +2,7 @@ import type { Query } from "./query.interface";
 import type { QueryHandler } from "./query-handler.interface";
 
 export interface QueryBus {
-  execute<TResult>(query: Query): TResult;
+  execute<TResult>(query: Query): Promise<TResult>;
 
   register(
     queryType: string,

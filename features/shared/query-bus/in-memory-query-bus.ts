@@ -5,7 +5,9 @@ import type { QueryHandler } from "../contracts/query-handler.interface";
 export class InMemoryQueryBus implements QueryBus {
   private readonly handlers = new Map<string, QueryHandler>();
 
-  execute<TResult>(query: Query): TResult {
+  async execute<TResult>(
+    query: Query,
+  ): Promise<TResult> {
     const handler = this.handlers.get(query.type);
 
     if (!handler) {
@@ -14,7 +16,7 @@ export class InMemoryQueryBus implements QueryBus {
       );
     }
 
-    return handler.execute(query) as TResult;
+    return handler.execute(query) as Promise<TResult>;
   }
 
   register(
