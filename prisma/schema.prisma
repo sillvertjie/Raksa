@@ -73,3 +73,15 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+/// Organizational tag that can be attached
+/// to any workspace entity via polymorphic attachment.
+model Tag {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  color       String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
