@@ -85,3 +85,18 @@ model Tag {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+
+/// Organizational collection that groups workspace resources.
+/// Supports future nested workspace organization.
+model Collection {
+  id          String       @id @default(cuid())
+  name        String
+  description String?
+  parentId    String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  parent      Collection?  @relation("CollectionHierarchy", fields: [parentId], references: [id])
+  children    Collection[] @relation("CollectionHierarchy")
+}
