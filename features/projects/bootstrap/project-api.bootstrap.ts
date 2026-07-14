@@ -1,5 +1,5 @@
 import { InMemoryCommandBus } from "../../shared/command-bus/in-memory-command-bus";
-import { InMemoryQueryBus } from "../../shared/query-bus/in-memory-query-bus";
+import { getQueryBus } from "../../shared/query-bus/query-bus.runtime";
 
 import { InMemoryProjectRepository } from "../repositories/project.repository";
 import { DefaultProjectService } from "../services/project.service";
@@ -12,7 +12,7 @@ import {
 
 type ProjectApiRuntime = {
   commandBus: InMemoryCommandBus;
-  queryBus: InMemoryQueryBus;
+  queryBus: ReturnType<typeof getQueryBus>;
 };
 
 
@@ -34,7 +34,7 @@ function createProjectApiRuntime(): ProjectApiRuntime {
     new InMemoryCommandBus();
 
   const queryBus =
-    new InMemoryQueryBus();
+    getQueryBus();
 
   registerProjectCommands(
     commandBus,

@@ -1,8 +1,8 @@
 import { InMemoryCommandBus } from "../../shared/command-bus/in-memory-command-bus";
-import { InMemoryQueryBus } from "../../shared/query-bus/in-memory-query-bus";
+import { getQueryBus } from "../../shared/query-bus/query-bus.runtime";
 import { InMemoryEventBus } from "../../shared/event-bus/in-memory-event-bus";
 
-import { InMemoryTaskRepository } from "../repositories/task.repository";
+import { getTaskRepository } from "../repositories/task.repository.runtime";
 import { DefaultTaskService } from "../services/task.service";
 
 import {
@@ -17,7 +17,7 @@ import {
 
 type TaskApiRuntime = {
   commandBus: InMemoryCommandBus;
-  queryBus: InMemoryQueryBus;
+  queryBus: ReturnType<typeof getQueryBus>;
 };
 
 
@@ -30,7 +30,7 @@ declare global {
 
 function createTaskApiRuntime(): TaskApiRuntime {
   const repository =
-    new InMemoryTaskRepository();
+    getTaskRepository();
 
   const eventBus =
     new InMemoryEventBus();
@@ -45,7 +45,7 @@ function createTaskApiRuntime(): TaskApiRuntime {
     new InMemoryCommandBus();
 
   const queryBus =
-    new InMemoryQueryBus();
+    getQueryBus();
 
   registerTaskCommands(
     commandBus,

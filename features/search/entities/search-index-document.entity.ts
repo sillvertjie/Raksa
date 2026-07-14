@@ -7,7 +7,9 @@ export type SearchSource =
   | "TASK"
   | "KNOWLEDGE_DOCUMENT";
 
-export interface SearchResultEntity extends BaseEntity {
+export interface SearchIndexDocument extends BaseEntity {
+  userId: string;
+
   source: SearchSource;
 
   title: string;
