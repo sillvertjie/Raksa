@@ -21,10 +21,11 @@ model User {
   image         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  accounts      Account[]
-  captures      Capture[]
-  notes         Note[]
-  sessions      Session[]
+
+  accounts Account[]
+  captures Capture[]
+  notes    Note[]
+  sessions Session[]
 }
 
 model Capture {
@@ -32,8 +33,9 @@ model Capture {
   content   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Note {
@@ -42,8 +44,9 @@ model Note {
   content   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Account {
@@ -59,7 +62,8 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -69,7 +73,8 @@ model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
@@ -81,42 +86,45 @@ model VerificationToken {
 }
 
 /// Organizational tag that can be attached
-/// to any workspace entity via polymorphic attachment.
+/// to workspace entities via polymorphic attachment.
 model Tag {
-  id          String   @id @default(cuid())
+  id          String  @id @default(cuid())
   name        String
-  slug        String   @unique
+  slug        String  @unique
   color       String
   description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
 
 /// Organizational collection that groups workspace resources.
 /// Supports future nested workspace organization.
 model Collection {
-  id          String       @id @default(cuid())
+  id          String  @id @default(cuid())
   name        String
   description String?
-  parentId    String?
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
 
-  parent      Collection?  @relation("CollectionHierarchy", fields: [parentId], references: [id])
-  children    Collection[] @relation("CollectionHierarchy")
+  parentId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  parent   Collection?  @relation("CollectionHierarchy", fields: [parentId], references: [id])
+  children Collection[] @relation("CollectionHierarchy")
 }
 
 /// File metadata stored in workspace storage.
 /// Binary data is handled by StorageAdapter.
 model WorkspaceFile {
-  id          String   @id @default(cuid())
-  name        String
-  mimeType    String
-  size        Int
-  storageKey  String   @unique
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id         String @id @default(cuid())
+  name       String
+  mimeType   String
+  size       Int
+  storageKey String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Project {
@@ -125,6 +133,45 @@ model Project {
   description String?
   status      ProjectStatus @default(ACTIVE)
 
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+/// Knowledge Base document hierarchy.
+/// Represents logical knowledge documents.
+model KnowledgeDocument {
+  id String @id @default(cuid())
+
+  workspaceId String
+
+  title String
+  slug  String
+
+  parentId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  parent   KnowledgeDocument?  @relation("KnowledgeDocumentHierarchy", fields: [parentId], references: [id])
+  children KnowledgeDocument[] @relation("KnowledgeDocumentHierarchy")
+
+  versions KnowledgeDocumentVersion[]
+
+  @@index([parentId])
+}
+
+/// Immutable document snapshot.
+/// Every content change creates a new version.
+model KnowledgeDocumentVersion {
+  id String @id @default(cuid())
+
+  documentId String
+
+  content Json
+
+  versionNumber Int
+
+  createdAt DateTime @default(now())
+
+  document KnowledgeDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
 }
