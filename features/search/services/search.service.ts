@@ -1,11 +1,11 @@
+import type { SearchServiceInterface } from "../contracts/search-service.interface";
+import type { SearchRepositoryInterface } from "../contracts/search-repository.interface";
 import type { SearchDTO } from "../dto/search.dto";
-import { SearchRepository } from "../repositories/search.repository";
 import { validateSearchDTO } from "../validators/search.validator";
 
-export class SearchService {
+export class SearchService implements SearchServiceInterface {
   constructor(
-    private readonly repository =
-      new SearchRepository()
+    private readonly repository: SearchRepositoryInterface
   ) {}
 
   async search(

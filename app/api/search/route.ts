@@ -5,9 +5,7 @@ import {
   handleApiSuccess,
 } from "@/lib/api/errors";
 
-import { SearchService } from "@/features/search/services/search.service";
-
-const service = new SearchService();
+import { searchService } from "@/features/search/bootstrap/search.bootstrap";
 
 export async function POST(request: Request) {
   try {
@@ -23,7 +21,7 @@ export async function POST(request: Request) {
 
     const body = await request.json();
 
-    const result = await service.search(
+    const result = await searchService.search(
       session.user.id,
       {
         query: body.query,

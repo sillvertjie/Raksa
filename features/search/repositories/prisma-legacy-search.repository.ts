@@ -1,6 +1,9 @@
 import { prisma } from "@/lib/prisma";
+import type { SearchRepositoryInterface } from "../contracts/search-repository.interface";
 
-export class SearchRepository {
+export class PrismaLegacySearchRepository
+  implements SearchRepositoryInterface
+{
   async search(
     userId: string,
     query: string
@@ -44,8 +47,18 @@ export class SearchRepository {
     ]);
 
     return {
-      notes,
-      captures,
+     notes: notes.map((note) => ({
+    id: note.id,
+    title: note.title,
+    content: note.content,
+    createdAt: note.createdAt.toISOString(),
+  })),
+
+     captures: captures.map((capture) => ({
+    id: capture.id,
+    content: capture.content,
+    createdAt: capture.createdAt.toISOString(),
+      })),
     };
   }
 }
