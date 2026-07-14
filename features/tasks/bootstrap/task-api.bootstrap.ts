@@ -1,6 +1,8 @@
+import "@/features/search/bootstrap/search.bootstrap";
+
 import { InMemoryCommandBus } from "../../shared/command-bus/in-memory-command-bus";
 import { getQueryBus } from "../../shared/query-bus/query-bus.runtime";
-import { InMemoryEventBus } from "../../shared/event-bus/in-memory-event-bus";
+import { getEventBus } from "../../shared/event-bus/event-bus.runtime";
 
 import { getTaskRepository } from "../repositories/task.repository.runtime";
 import { DefaultTaskService } from "../services/task.service";
@@ -33,7 +35,7 @@ function createTaskApiRuntime(): TaskApiRuntime {
     getTaskRepository();
 
   const eventBus =
-    new InMemoryEventBus();
+    getEventBus();
 
   const service =
     new DefaultTaskService(
