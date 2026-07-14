@@ -1,14 +1,16 @@
 import { getEventBus } from "@/features/shared/event-bus/event-bus.runtime";
+import { getQueryBus } from "@/features/shared/query-bus/query-bus.runtime";
 import { getTaskRepository } from "@/features/tasks/repositories/task.repository.runtime";
+
+import { DefaultSearchEventConsumer } from "../consumers/search-event.consumer";
+import { SearchQueryHandler } from "../handlers/search.query-handler";
+import { TaskSearchReader } from "../readers/task-search.reader";
 
 import { PrismaLegacySearchRepository } from "../repositories/prisma-legacy-search.repository";
 import { PrismaSearchIndexRepository } from "../repositories/prisma-search-index.repository";
 
-import { SearchService } from "../services/search.service";
 import { SearchIndexService } from "../services/search-index.service";
-
-import { DefaultSearchEventConsumer } from "../consumers/search-event.consumer";
-import { TaskSearchReader } from "../readers/task-search.reader";
+import { SearchService } from "../services/search.service";
 
 
 const legacyRepository =
@@ -29,6 +31,18 @@ const searchIndexService =
   new SearchIndexService(
     searchIndexRepository,
   );
+
+
+const searchQueryHandler =
+  new SearchQueryHandler(
+    searchIndexRepository,
+  );
+
+
+getQueryBus().register(
+  "search.query",
+  searchQueryHandler,
+);
 
 
 const taskRepository =
