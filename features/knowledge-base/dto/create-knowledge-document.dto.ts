@@ -6,6 +6,4 @@ export interface CreateKnowledgeDocumentDto {
   slug: string;
 
   parentId?: string | null;
-
-  content: unknown;
 }

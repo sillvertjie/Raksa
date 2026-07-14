@@ -6,31 +6,32 @@ import type { KnowledgeDocumentEntity } from "../entities/knowledge-document.ent
 import type { KnowledgeDocumentVersionEntity } from "../entities/knowledge-document-version.entity";
 
 
-export interface KnowledgeDocumentRepository {
+export interface KnowledgeDocumentService {
 
   create(
-    data: CreateKnowledgeDocumentDto,
+    dto: CreateKnowledgeDocumentDto,
   ): Promise<KnowledgeDocumentEntity>;
 
 
   update(
     id: string,
-    data: UpdateKnowledgeDocumentDto,
+    dto: UpdateKnowledgeDocumentDto,
   ): Promise<KnowledgeDocumentEntity>;
 
 
-  findById(
+  getById(
     id: string,
   ): Promise<KnowledgeDocumentEntity | null>;
 
 
-  findAll(): Promise<KnowledgeDocumentEntity[]>;
+  getAll(): Promise<KnowledgeDocumentEntity[]>;
 
 
   createVersion(
-    data: CreateKnowledgeDocumentVersionDto,
+    dto: CreateKnowledgeDocumentVersionDto,
   ): Promise<KnowledgeDocumentVersionEntity>;
 
 
-  findHierarchy(): Promise<KnowledgeDocumentEntity[]>;
+  getHierarchy(): Promise<KnowledgeDocumentEntity[]>;
+
 }
