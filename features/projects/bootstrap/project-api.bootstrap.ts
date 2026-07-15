@@ -1,7 +1,7 @@
 import { InMemoryCommandBus } from "../../shared/command-bus/in-memory-command-bus";
 import { getQueryBus } from "../../shared/query-bus/query-bus.runtime";
 
-import { InMemoryProjectRepository } from "../repositories/project.repository";
+import { getProjectRepository } from "../repositories/project.repository.runtime";
 import { DefaultProjectService } from "../services/project.service";
 
 import {
@@ -25,7 +25,7 @@ declare global {
 
 function createProjectApiRuntime(): ProjectApiRuntime {
   const repository =
-    new InMemoryProjectRepository();
+    getProjectRepository();
 
   const service =
     new DefaultProjectService(repository);
