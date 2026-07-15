@@ -1,3 +1,4 @@
+import { aiRuntime } from "@/ai/bootstrap/ai.runtime";
 import { getEventBus } from "@/features/shared/event-bus/event-bus.runtime";
 import { getQueryBus } from "@/features/shared/query-bus/query-bus.runtime";
 import { getTaskRepository } from "@/features/tasks/repositories/task.repository.runtime";
@@ -11,6 +12,7 @@ import { PrismaSearchIndexRepository } from "../repositories/prisma-search-index
 
 import { SearchIndexService } from "../services/search-index.service";
 import { SearchService } from "../services/search.service";
+import { DefaultSearchAIBridge } from "../services/default-search-ai-bridge.service";
 
 
 const legacyRepository =
@@ -64,6 +66,12 @@ const searchEventConsumer =
 
 
 searchEventConsumer.register();
+
+
+export const searchAIBridge =
+  new DefaultSearchAIBridge(
+    aiRuntime.aiService,
+  );
 
 
 export {
