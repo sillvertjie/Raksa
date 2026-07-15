@@ -16,19 +16,19 @@ export class PrismaSearchIndexRepository
       where: {
         id: document.id,
       },
-      update: {
-        userId: document.userId,
-        source: document.source,
-        title: document.title,
-        content: document.content,
-      },
-      create: {
-        id: document.id,
-        userId: document.userId,
-        source: document.source,
-        title: document.title,
-        content: document.content,
-      },
+     update: {
+      scopeId: document.scopeId,
+      source: document.source,
+      title: document.title,
+      content: document.content,
+    },
+    create: {
+      id: document.id,
+      scopeId: document.scopeId,
+      source: document.source,
+      title: document.title,
+      content: document.content,
+    },
     });
   }
 
@@ -43,13 +43,13 @@ export class PrismaSearchIndexRepository
   }
 
   async search(
-    userId: string,
+    scopeId: string,
     query: string,
   ): Promise<SearchIndexDocument[]> {
     const documents =
       await prisma.searchIndexDocument.findMany({
         where: {
-          userId,
+          scopeId,
           OR: [
             {
               title: {

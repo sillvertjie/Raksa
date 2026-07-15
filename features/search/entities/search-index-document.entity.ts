@@ -8,7 +8,7 @@ export type SearchSource =
   | "KNOWLEDGE_DOCUMENT";
 
 export interface SearchIndexDocument extends BaseEntity {
-  userId: string;
+  scopeId: string;
 
   source: SearchSource;
 

@@ -1,5 +1,10 @@
 import { auth } from "@/lib/auth";
-import { AppError, ERROR_CODES } from "@/lib/errors";
+
+import {
+  AppError,
+  ERROR_CODES,
+} from "@/lib/errors";
+
 import {
   handleApiError,
   handleApiSuccess,
@@ -8,7 +13,10 @@ import {
 import { getQueryBus } from "@/features/shared/query-bus/query-bus.runtime";
 
 import { SearchQuery } from "@/features/search/queries/search.queries";
+
 import type { SearchIndexDocument } from "@/features/search/entities/search-index-document.entity";
+
+import { DEFAULT_SEARCH_SCOPE } from "@/features/search/constants/search-scope.constant";
 
 
 export async function POST(
@@ -25,11 +33,13 @@ export async function POST(
       );
     }
 
-    const body = await request.json();
+    const body =
+      await request.json();
+
 
     const query =
       new SearchQuery(
-        session.user.id,
+        DEFAULT_SEARCH_SCOPE,
         body.query,
       );
 
@@ -41,6 +51,7 @@ export async function POST(
 
 
     return handleApiSuccess(result);
+
   } catch (error) {
     return handleApiError(error);
   }

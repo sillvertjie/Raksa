@@ -15,7 +15,7 @@ export class SearchQueryHandler
     query: SearchQuery,
   ): Promise<SearchIndexDocument[]> {
     return this.repository.search(
-      query.userId,
+      query.scopeId,
       query.query,
     );
   }

@@ -5,6 +5,8 @@ import type { SearchEventConsumer } from "../contracts/search-event-consumer.int
 import type { SearchIndexService } from "../services/search-index.service";
 import type { SearchSourceReader } from "../contracts/search-source-reader.interface";
 
+import { DEFAULT_SEARCH_SCOPE } from "../constants/search-scope.constant";
+
 export class DefaultSearchEventConsumer
   implements SearchEventConsumer
 {
@@ -71,11 +73,11 @@ export class DefaultSearchEventConsumer
 
     await this.indexService.index({
       id: task.id,
-      userId: "",
+      scopeId: DEFAULT_SEARCH_SCOPE,
       source: "TASK",
       title: task.title,
       content:
-        task.description ?? "",
+        task.description ?? task.title,
       createdAt: task.createdAt,
       updatedAt: task.updatedAt,
     });

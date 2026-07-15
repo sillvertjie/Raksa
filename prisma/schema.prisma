@@ -180,7 +180,7 @@ model KnowledgeDocumentVersion {
 model SearchIndexDocument {
   id        String   @id @default(cuid())
 
-  userId    String
+  scopeId    String
 
   source    String
 
@@ -192,6 +192,6 @@ model SearchIndexDocument {
 
   updatedAt DateTime @updatedAt
 
-  @@index([userId])
+  @@index([scopeId])
   @@index([source])
 }

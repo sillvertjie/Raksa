@@ -10,7 +10,7 @@ export interface SearchIndexRepository {
   ): Promise<void>;
 
   search(
-    userId: string,
+    scopeId: string,
     query: string,
   ): Promise<SearchIndexDocument[]>;
 }
