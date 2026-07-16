@@ -7,8 +7,11 @@ export interface FileUploadedPayload {
   size: number;
 }
 
-export class FileUploadedEvent implements DomainEvent {
-  readonly type = "files.file-uploaded";
+export class FileUploadedEvent
+  implements DomainEvent<FileUploadedPayload>
+{
+  readonly type = "file.uploaded";
+
   readonly occurredAt = new Date();
 
   constructor(
