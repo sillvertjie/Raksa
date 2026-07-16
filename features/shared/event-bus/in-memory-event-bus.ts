@@ -3,17 +3,23 @@ import type { EventBus } from "../contracts/event-bus.interface";
 import type { EventHandler } from "../contracts/event-handler.type";
 
 export class InMemoryEventBus implements EventBus {
-  private readonly handlers = new Map<string, Set<EventHandler>>();
+  private readonly handlers = new Map<
+    string,
+    Set<EventHandler>
+  >();
 
-  publish(event: DomainEvent): void {
-    const handlers = this.handlers.get(event.type);
+  async publish(
+    event: DomainEvent,
+  ): Promise<void> {
+    const handlers =
+      this.handlers.get(event.type);
 
     if (!handlers) {
       return;
     }
 
     for (const handler of handlers) {
-      handler(event);
+      await handler(event);
     }
   }
 
@@ -21,17 +27,22 @@ export class InMemoryEventBus implements EventBus {
     eventType: string,
     handler: EventHandler,
   ): () => void {
-    let handlers = this.handlers.get(eventType);
+    let handlers =
+      this.handlers.get(eventType);
 
     if (!handlers) {
       handlers = new Set<EventHandler>();
-      this.handlers.set(eventType, handlers);
+      this.handlers.set(
+        eventType,
+        handlers,
+      );
     }
 
     handlers.add(handler);
 
     return () => {
-      const currentHandlers = this.handlers.get(eventType);
+      const currentHandlers =
+        this.handlers.get(eventType);
 
       if (!currentHandlers) {
         return;

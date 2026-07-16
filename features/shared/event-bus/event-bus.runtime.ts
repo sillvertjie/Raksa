@@ -1,12 +1,13 @@
+import type { EventBus } from "../contracts/event-bus.interface";
 import { InMemoryEventBus } from "./in-memory-event-bus";
 
 declare global {
   var raksaEventBus:
-    | InMemoryEventBus
+    | EventBus
     | undefined;
 }
 
-export function getEventBus() {
+export function getEventBus(): EventBus {
   if (!global.raksaEventBus) {
     global.raksaEventBus =
       new InMemoryEventBus();
