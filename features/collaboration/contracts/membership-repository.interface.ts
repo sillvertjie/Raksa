@@ -2,14 +2,18 @@ import type { WorkspaceMembership } from "@/features/collaboration/entities/work
 
 export interface MembershipRepository {
   create(
-    membership: WorkspaceMembership
+    membership: WorkspaceMembership,
   ): Promise<WorkspaceMembership>;
 
+  delete(
+    id: string,
+  ): Promise<void>;
+
   findById(
-    id: string
+    id: string,
   ): Promise<WorkspaceMembership | null>;
 
   findByWorkspace(
-    workspaceId: string
+    workspaceId: string,
   ): Promise<WorkspaceMembership[]>;
 }
