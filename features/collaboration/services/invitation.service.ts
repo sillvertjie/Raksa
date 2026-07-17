@@ -1,8 +1,11 @@
+import type { EventBus } from "../../shared/contracts/event-bus.interface";
 import type { InvitationRepository } from "../contracts/invitation-repository.interface";
 import type { InvitationService } from "../contracts/invitation-service.interface";
 import type { CreateInvitationDto } from "../dto/create-invitation.dto";
 import type { WorkspaceInvitation } from "../entities/workspace-invitation.entity";
 
+import { InvitationAcceptedEvent } from "../events/invitation-accepted.event";
+import { InvitationSentEvent } from "../events/invitation-sent.event";
 import { validateCreateInvitation } from "../validators/invitation.validator";
 
 export class DefaultInvitationService
@@ -10,6 +13,7 @@ export class DefaultInvitationService
 {
   constructor(
     private readonly repository: InvitationRepository,
+    private readonly eventBus: EventBus,
   ) {}
 
   async create(
@@ -33,13 +37,23 @@ export class DefaultInvitationService
       expiresAt: dto.expiresAt,
     };
 
-    return this.repository.create(invitation);
+    const created =
+      await this.repository.create(invitation);
+
+    this.eventBus.publish(
+      new InvitationSentEvent({
+        invitationId: created.id,
+      }),
+    );
+
+    return created;
   }
 
   async accept(
     token: string,
   ): Promise<WorkspaceInvitation> {
-    const invitation = await this.repository.findByToken(token);
+    const invitation =
+      await this.repository.findByToken(token);
 
     if (!invitation) {
       throw new Error("Invitation not found.");
@@ -59,7 +73,16 @@ export class DefaultInvitationService
       updatedAt: new Date(),
     };
 
-    return this.repository.update(accepted);
+    const updated =
+      await this.repository.update(accepted);
+
+    this.eventBus.publish(
+      new InvitationAcceptedEvent({
+        invitationId: updated.id,
+      }),
+    );
+
+    return updated;
   }
 
   async revoke(

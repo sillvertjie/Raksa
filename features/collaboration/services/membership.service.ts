@@ -1,8 +1,11 @@
+import type { EventBus } from "../../shared/contracts/event-bus.interface";
 import type { MembershipRepository } from "../contracts/membership-repository.interface";
 import type { MembershipService } from "../contracts/membership-service.interface";
 import type { CreateMembershipDto } from "../dto/create-membership.dto";
 import type { WorkspaceMembership } from "../entities/workspace-membership.entity";
 
+import { MembershipCreatedEvent } from "../events/membership-created.event";
+import { MembershipRemovedEvent } from "../events/membership-removed.event";
 import { MembershipValidator } from "../validators/membership.validator";
 
 export class DefaultMembershipService
@@ -10,6 +13,7 @@ export class DefaultMembershipService
 {
   constructor(
     private readonly repository: MembershipRepository,
+    private readonly eventBus: EventBus,
   ) {}
 
   async create(
@@ -29,13 +33,28 @@ export class DefaultMembershipService
       updatedAt: now,
     };
 
-    return this.repository.create(membership);
+    const created =
+      await this.repository.create(membership);
+
+    this.eventBus.publish(
+      new MembershipCreatedEvent({
+        membershipId: created.id,
+      }),
+    );
+
+    return created;
   }
 
   async remove(
     id: string,
   ): Promise<void> {
     await this.repository.delete(id);
+
+    this.eventBus.publish(
+      new MembershipRemovedEvent({
+        membershipId: id,
+      }),
+    );
   }
 
   async getById(
