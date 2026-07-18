@@ -2,9 +2,10 @@ import type { ActivityRepository } from "../contracts/activity-repository.interf
 
 import { projectionDispatcher } from "../../shared/projections/projection.runtime";
 
-import { ActivityProjection } from "../projections/activity.projection";
-import { InMemoryActivityRepository } from "../repositories/activity.repository";
+import { getActivityRepository } from "../repositories/activity.repository.runtime";
 import { DefaultActivityProjectionService } from "../services/activity-projection.service";
+
+import { ActivityProjection } from "../projections/activity.projection";
 
 
 type ActivityProjectionRuntime = {
@@ -22,7 +23,7 @@ declare global {
 
 function createActivityProjectionRuntime(): ActivityProjectionRuntime {
   const repository =
-    new InMemoryActivityRepository();
+    getActivityRepository();
 
   const service =
     new DefaultActivityProjectionService(
@@ -53,3 +54,17 @@ export function getActivityProjectionRuntime() {
 
   return global.activityProjectionRuntime;
 }
+
+/**
+ * Activity Projection Runtime
+ *
+ * Projection consumer terhadap Domain Event.
+ *
+ * Repository berasal dari Activity Repository Runtime
+ * agar instance yang sama digunakan oleh:
+ *
+ * - Activity Projection Service
+ * - Activity Query Service
+ *
+ * Activity Timeline menggunakan CQRS read model pattern.
+ */
