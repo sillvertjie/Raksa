@@ -12,6 +12,9 @@ export class DeleteProjectCommandHandler
   async execute(
     command: DeleteProjectCommand,
   ): Promise<void> {
-    return this.service.delete(command.dto.id);
+    await this.service.delete(
+      command.workspaceId,
+      command.dto.id,
+    );
   }
 }

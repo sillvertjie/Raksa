@@ -14,17 +14,17 @@ export class DefaultWorkspaceAggregationRepository
     private readonly knowledgeRepository: KnowledgeDocumentRepository,
   ) {}
 
-    async getWorkspace(
-    userId: string,
-    ): Promise<WorkspaceItem[]> {
-    void userId;
-
+  async getWorkspace(
+    workspaceId: string,
+  ): Promise<WorkspaceItem[]> {
     const [
-        projects,
-        tasks,
-        documents,
+      projects,
+      tasks,
+      documents,
     ] = await Promise.all([
-      this.projectRepository.findAll(),
+      this.projectRepository.findAll(
+        workspaceId,
+      ),
       this.taskRepository.findAll(),
       this.knowledgeRepository.findAll(),
     ]);

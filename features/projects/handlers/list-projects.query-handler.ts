@@ -10,11 +10,11 @@ export class ListProjectsQueryHandler
     private readonly repository: ProjectRepository,
   ) {}
 
-    async execute(
+  async execute(
     query: ListProjectsQuery,
-    ): Promise<Project[]> {
-    void query;
-
-    return this.repository.findAll();
-    }
+  ): Promise<Project[]> {
+    return this.repository.findAll(
+      query.workspaceId,
+    );
+  }
 }

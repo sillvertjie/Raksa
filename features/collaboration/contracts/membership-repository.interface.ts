@@ -16,4 +16,8 @@ export interface MembershipRepository {
   findByWorkspace(
     workspaceId: string,
   ): Promise<WorkspaceMembership[]>;
+
+  findByUser(
+    userId: string,
+  ): Promise<WorkspaceMembership[]>;
 }

@@ -17,8 +17,8 @@ export class InMemoryProjectRepository implements ProjectRepository {
   }
 
   async delete(id: string): Promise<void> {
-    this.projects.delete(id);
-  }
+  this.projects.delete(id);
+}
 
   async findById(id: string): Promise<Project | null> {
     return this.projects.get(id) ?? null;

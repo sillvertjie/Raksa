@@ -5,6 +5,7 @@ export class DeleteProjectCommand implements Command {
   readonly type = "project.delete";
 
   constructor(
+    public readonly workspaceId: string,
     public readonly dto: DeleteProjectDto,
   ) {}
 }

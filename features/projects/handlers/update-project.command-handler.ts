@@ -1,6 +1,5 @@
 import type { CommandHandler } from "../../shared/contracts/command-handler.interface";
 import type { ProjectService } from "../contracts/project-service.interface";
-import type { Project } from "../entities/project.entity";
 import { UpdateProjectCommand } from "../commands/update-project.command";
 
 export class UpdateProjectCommandHandler
@@ -12,8 +11,9 @@ export class UpdateProjectCommandHandler
 
   async execute(
     command: UpdateProjectCommand,
-  ): Promise<Project> {
+  ) {
     return this.service.update(
+      command.workspaceId,
       command.id,
       command.dto,
     );

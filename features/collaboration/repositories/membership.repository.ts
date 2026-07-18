@@ -40,4 +40,15 @@ export class InMemoryMembershipRepository
         membership.workspaceId === workspaceId,
     );
   }
+async findByUser(
+  userId: string,
+): Promise<WorkspaceMembership[]> {
+  return [
+    ...this.memberships.values(),
+  ].filter(
+    (membership) =>
+      membership.userId === userId &&
+      membership.status === "ACTIVE",
+  );
+}
 }

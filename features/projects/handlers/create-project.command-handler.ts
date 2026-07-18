@@ -1,6 +1,5 @@
 import type { CommandHandler } from "../../shared/contracts/command-handler.interface";
 import type { ProjectService } from "../contracts/project-service.interface";
-import type { Project } from "../entities/project.entity";
 import { CreateProjectCommand } from "../commands/create-project.command";
 
 export class CreateProjectCommandHandler
@@ -12,7 +11,10 @@ export class CreateProjectCommandHandler
 
   async execute(
     command: CreateProjectCommand,
-  ): Promise<Project> {
-    return this.service.create(command.dto);
+  ) {
+    return this.service.create(
+      command.workspaceId,
+      command.dto,
+    );
   }
 }

@@ -1,14 +1,15 @@
 import { auth } from "@/lib/auth";
-import {
-  handleApiError,
-  handleApiSuccess,
-} from "@/lib/api/errors";
-import { AppError, ERROR_CODES } from "@/lib/errors";
 
-import { getProjectApiRuntime } from "@/features/projects/bootstrap/project-api.bootstrap";
-
-import { ListProjectsQuery } from "@/features/projects/queries/list-projects.query";
+import { getProjectApiRuntime } 
+from "@/features/projects/bootstrap/project-api.bootstrap";
 import { CreateProjectCommand } from "@/features/projects/commands/create-project.command";
+import { ListProjectsQuery } from "@/features/projects/queries/list-projects.query";
+
+import { workspaceContextResolver } from "@/features/collaboration/access/context/workspace-context.runtime";
+
+import { handleApiError } from "@/lib/api/errors/handle-api-error";
+import { handleApiSuccess } from "@/lib/api/errors/handle-api-success";import { AppError } from "@/lib/errors/app-error";
+import { ERROR_CODES } from "@/lib/errors/error-codes";
 
 export async function GET() {
   try {
@@ -22,11 +23,21 @@ export async function GET() {
       );
     }
 
-    const { queryBus } = getProjectApiRuntime();
+    const workspaceId =
+      await workspaceContextResolver.resolve(
+        session.user.id,
+      );
 
-    const result = await queryBus.execute(
-      new ListProjectsQuery(),
-    );
+    const {
+      queryBus,
+    } = getProjectApiRuntime();
+
+    const result =
+      await queryBus.execute(
+        new ListProjectsQuery(
+          workspaceId,
+        ),
+      );
 
     return handleApiSuccess(result);
   } catch (error) {
@@ -34,7 +45,9 @@ export async function GET() {
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(
+  request: Request,
+) {
   try {
     const session = await auth();
 
@@ -46,16 +59,28 @@ export async function POST(request: Request) {
       );
     }
 
-    const body = await request.json();
+    const workspaceId =
+      await workspaceContextResolver.resolve(
+        session.user.id,
+      );
 
-    const { commandBus } = getProjectApiRuntime();
+    const body =
+      await request.json();
 
-    const result = await commandBus.execute(
-      new CreateProjectCommand({
-        name: body.name,
-        description: body.description,
-      }),
-    );
+    const {
+      commandBus,
+    } = getProjectApiRuntime();
+
+    const result =
+      await commandBus.execute(
+        new CreateProjectCommand(
+          workspaceId,
+          {
+            name: body.name,
+            description: body.description,
+          },
+        ),
+      );
 
     return handleApiSuccess(result);
   } catch (error) {

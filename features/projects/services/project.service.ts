@@ -5,18 +5,24 @@ import type { UpdateProjectDto } from "../dto/update-project.dto";
 import type { Project } from "../entities/project.entity";
 import { ProjectValidator } from "../validators/project.validator";
 
-export class DefaultProjectService implements ProjectService {
+export class DefaultProjectService
+  implements ProjectService
+{
   constructor(
     private readonly repository: ProjectRepository,
   ) {}
 
-  async create(dto: CreateProjectDto): Promise<Project> {
+  async create(
+    workspaceId: string,
+    dto: CreateProjectDto,
+  ): Promise<Project> {
     ProjectValidator.validateCreate(dto);
 
     const now = new Date();
 
     const project: Project = {
       id: crypto.randomUUID(),
+      workspaceId,
       createdAt: now,
       updatedAt: now,
       name: dto.name.trim(),
@@ -27,10 +33,18 @@ export class DefaultProjectService implements ProjectService {
     return this.repository.create(project);
   }
 
-  async update(id: string, dto: UpdateProjectDto): Promise<Project> {
+  async update(
+    workspaceId: string,
+    id: string,
+    dto: UpdateProjectDto,
+  ): Promise<Project> {
     ProjectValidator.validateUpdate(dto);
 
-    const project = await this.repository.findById(id);
+    const project =
+      await this.repository.findById(
+        workspaceId,
+        id,
+      );
 
     if (!project) {
       throw new Error("Project not found.");
@@ -38,22 +52,48 @@ export class DefaultProjectService implements ProjectService {
 
     const updated: Project = {
       ...project,
-      ...dto,
+      name: dto.name ?? project.name,
+      description:
+        dto.description !== undefined
+          ? dto.description
+          : project.description,
+      status: dto.status ?? project.status,
       updatedAt: new Date(),
     };
 
     return this.repository.update(updated);
   }
 
-  async delete(id: string): Promise<void> {
-    await this.repository.delete(id);
+  async delete(
+  workspaceId: string,
+  id: string,
+): Promise<void> {
+  const project = await this.repository.findById(
+    workspaceId,
+    id,
+  );
+
+  if (!project) {
+    throw new Error("Project not found.");
   }
 
-  async getById(id: string): Promise<Project | null> {
-    return this.repository.findById(id);
+  await this.repository.delete(id);
+}
+  async getById(
+    workspaceId: string,
+    id: string,
+  ): Promise<Project | null> {
+    return this.repository.findById(
+      workspaceId,
+      id,
+    );
   }
 
-  async getAll(): Promise<Project[]> {
-    return this.repository.findAll();
+  async getAll(
+    workspaceId: string,
+  ): Promise<Project[]> {
+    return this.repository.findAll(
+      workspaceId,
+    );
   }
 }

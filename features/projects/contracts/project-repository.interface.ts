@@ -7,7 +7,12 @@ export interface ProjectRepository {
 
   delete(id: string): Promise<void>;
 
-  findById(id: string): Promise<Project | null>;
+  findById(
+    workspaceId: string,
+    id: string,
+  ): Promise<Project | null>;
 
-  findAll(): Promise<Project[]>;
+  findAll(
+    workspaceId: string,
+  ): Promise<Project[]>;
 }

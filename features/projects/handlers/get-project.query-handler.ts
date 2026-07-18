@@ -13,6 +13,9 @@ export class GetProjectQueryHandler
   async execute(
     query: GetProjectQuery,
   ): Promise<Project | null> {
-    return this.repository.findById(query.id);
+    return this.repository.findById(
+      query.workspaceId,
+      query.id,
+    );
   }
 }

@@ -5,6 +5,7 @@ export class CreateProjectCommand implements Command {
   readonly type = "project.create";
 
   constructor(
+    public readonly workspaceId: string,
     public readonly dto: CreateProjectDto,
   ) {}
 }

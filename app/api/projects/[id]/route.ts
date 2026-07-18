@@ -11,11 +11,15 @@ import { GetProjectQuery } from "@/features/projects/queries/get-project.query";
 import { UpdateProjectCommand } from "@/features/projects/commands/update-project.command";
 import { DeleteProjectCommand } from "@/features/projects/commands/delete-project.command";
 
+import { workspaceContextResolver } from "@/features/collaboration/access/context/workspace-context.runtime";
+
+
 type RouteContext = {
   params: Promise<{
     id: string;
   }>;
 };
+
 
 export async function GET(
   _request: Request,
@@ -32,25 +36,46 @@ export async function GET(
       );
     }
 
-    const { id } = await context.params;
 
-    const { queryBus } = getProjectApiRuntime();
+    const workspaceId =
+      await workspaceContextResolver.resolve(
+        session.user.id,
+      );
 
-    const result = await queryBus.execute(
-      new GetProjectQuery(id),
-    );
+
+    const { id } =
+      await context.params;
+
+
+    const {
+      queryBus,
+    } = getProjectApiRuntime();
+
+
+    const result =
+      await queryBus.execute(
+        new GetProjectQuery(
+          workspaceId,
+          id,
+        ),
+      );
+
 
     return handleApiSuccess(result);
+
   } catch (error) {
     return handleApiError(error);
   }
 }
+
+
 
 export async function PATCH(
   request: Request,
   context: RouteContext,
 ) {
   try {
+
     const session = await auth();
 
     if (!session?.user?.id) {
@@ -61,29 +86,57 @@ export async function PATCH(
       );
     }
 
-    const { id } = await context.params;
-    const body = await request.json();
 
-    const { commandBus } = getProjectApiRuntime();
+    const workspaceId =
+      await workspaceContextResolver.resolve(
+        session.user.id,
+      );
 
-    const result = await commandBus.execute(
-      new UpdateProjectCommand(id, {
-        name: body.name,
-        description: body.description,
-      }),
-    );
+
+    const { id } =
+      await context.params;
+
+
+    const body =
+      await request.json();
+
+
+    const {
+      commandBus,
+    } = getProjectApiRuntime();
+
+
+    const result =
+      await commandBus.execute(
+        new UpdateProjectCommand(
+          workspaceId,
+          id,
+          {
+            name: body.name,
+            description: body.description,
+          },
+        ),
+      );
+
 
     return handleApiSuccess(result);
+
+
   } catch (error) {
     return handleApiError(error);
   }
 }
 
+
+
+
 export async function DELETE(
   _request: Request,
   context: RouteContext,
 ) {
+
   try {
+
     const session = await auth();
 
     if (!session?.user?.id) {
@@ -94,18 +147,39 @@ export async function DELETE(
       );
     }
 
-    const { id } = await context.params;
 
-    const { commandBus } = getProjectApiRuntime();
+    const workspaceId =
+      await workspaceContextResolver.resolve(
+        session.user.id,
+      );
 
-    const result = await commandBus.execute(
-      new DeleteProjectCommand({
-        id,
-      }),
-    );
+
+    const { id } =
+      await context.params;
+
+
+    const {
+      commandBus,
+    } = getProjectApiRuntime();
+
+
+
+    const result =
+      await commandBus.execute(
+        new DeleteProjectCommand(
+          workspaceId,
+          {
+            id,
+          },
+        ),
+      );
+
 
     return handleApiSuccess(result);
+
+
   } catch (error) {
     return handleApiError(error);
   }
+
 }

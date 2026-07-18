@@ -3,13 +3,28 @@ import type { UpdateProjectDto } from "../dto/update-project.dto";
 import type { Project } from "../entities/project.entity";
 
 export interface ProjectService {
-  create(dto: CreateProjectDto): Promise<Project>;
+  create(
+    workspaceId: string,
+    dto: CreateProjectDto,
+  ): Promise<Project>;
 
-  update(id: string, dto: UpdateProjectDto): Promise<Project>;
+  update(
+    workspaceId: string,
+    id: string,
+    dto: UpdateProjectDto,
+  ): Promise<Project>;
 
-  delete(id: string): Promise<void>;
+  delete(
+    workspaceId: string,
+    id: string,
+  ): Promise<void>;
 
-  getById(id: string): Promise<Project | null>;
+  getById(
+    workspaceId: string,
+    id: string,
+  ): Promise<Project | null>;
 
-  getAll(): Promise<Project[]>;
+  getAll(
+    workspaceId: string,
+  ): Promise<Project[]>;
 }

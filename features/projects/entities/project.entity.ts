@@ -6,6 +6,8 @@ export type ProjectStatus =
   | "ARCHIVED";
 
 export interface Project extends BaseEntity {
+  workspaceId: string;
+
   name: string;
   description: string | null;
   status: ProjectStatus;
