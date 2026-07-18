@@ -1,16 +1,14 @@
 "use client";
 
-import { useWorkspace } from "@/features/workspace/hooks/useWorkspace";
-
+import { PresenceList } from "@/features/presence/components/presence-list";
 import { WorkspaceList } from "@/features/workspace/components/workspace-list";
-
+import { useWorkspace } from "@/features/workspace/hooks/useWorkspace";
 
 export default function WorkspacePage() {
   const {
     items,
     loading,
   } = useWorkspace();
-
 
   if (loading) {
     return (
@@ -19,7 +17,6 @@ export default function WorkspacePage() {
       </p>
     );
   }
-
 
   return (
     <main className="space-y-6 p-6">
@@ -33,10 +30,23 @@ export default function WorkspacePage() {
         </p>
       </section>
 
+      <section className="space-y-3">
+        <h2 className="text-lg font-semibold">
+          Team Presence
+        </h2>
 
-      <WorkspaceList
-        items={items}
-      />
+        <PresenceList />
+      </section>
+
+      <section className="space-y-3">
+        <h2 className="text-lg font-semibold">
+          Workspace Items
+        </h2>
+
+        <WorkspaceList
+          items={items}
+        />
+      </section>
     </main>
   );
 }
