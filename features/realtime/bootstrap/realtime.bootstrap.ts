@@ -19,4 +19,25 @@ export function registerRealtimeEventListeners(
       await distributor.distribute(event);
     },
   );
+
+  eventBus.subscribe(
+  "comment.created",
+  async (event) => {
+    await distributor.distribute(event);
+   },
+  );
+
+  eventBus.subscribe(
+    "comment.updated",
+    async (event) => {
+      await distributor.distribute(event);
+    },
+  );
+
+  eventBus.subscribe(
+    "comment.deleted",
+    async (event) => {
+      await distributor.distribute(event);
+    },
+  );
 }
