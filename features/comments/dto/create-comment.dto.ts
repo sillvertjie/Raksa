@@ -1,10 +1,9 @@
-import type { CommentTargetType } from "../entities/comment.entity";
+import type {
+  CommentTargetType,
+} from "../entities/comment.entity";
+
 
 export interface CreateCommentDto {
-  workspaceId: string;
-
-  authorId: string;
-
   targetType: CommentTargetType;
 
   targetId: string;

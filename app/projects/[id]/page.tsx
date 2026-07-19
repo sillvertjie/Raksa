@@ -4,16 +4,24 @@ import { use } from "react";
 
 import { useProject } from "@/features/projects/hooks/useProject";
 
+import { useComments } from "@/features/comments/hooks/useComments";
+
+import { CommentList } from "@/features/comments/components/comment-list";
+import { CommentForm } from "@/features/comments/components/comment-form";
+
+
 type Props = {
   params: Promise<{
     id: string;
   }>;
 };
 
+
 export default function ProjectDetailPage({
   params,
 }: Props) {
   const { id } = use(params);
+
 
   const {
     project,
@@ -21,6 +29,17 @@ export default function ProjectDetailPage({
   } = useProject({
     id,
   });
+
+
+  const {
+    comments,
+    loading: commentsLoading,
+    createComment,
+  } = useComments(
+    "PROJECT",
+    id,
+  );
+
 
   if (loading) {
     return (
@@ -30,6 +49,7 @@ export default function ProjectDetailPage({
     );
   }
 
+
   if (!project) {
     return (
       <main className="p-6">
@@ -38,8 +58,30 @@ export default function ProjectDetailPage({
     );
   }
 
+
+  const currentProject = project;
+
+
+  async function handleCreateComment(
+    content: string,
+  ) {
+    await createComment({
+      targetType:
+        "PROJECT",
+
+      targetId:
+        currentProject.id,
+
+      parentCommentId:
+        null,
+
+      content,
+    });
+  }
+
   return (
     <main className="space-y-4 p-6">
+
       <header>
         <h1 className="text-2xl font-bold">
           {project.name}
@@ -50,6 +92,7 @@ export default function ProjectDetailPage({
             "No description"}
         </p>
       </header>
+
 
       <section className="rounded-lg border p-4">
         <p>
@@ -64,6 +107,38 @@ export default function ProjectDetailPage({
           ).toLocaleDateString()}
         </p>
       </section>
+
+
+      <section className="space-y-4 rounded-lg border p-4">
+
+        <h2 className="text-lg font-semibold">
+          Comments
+        </h2>
+
+
+        <CommentForm
+          onSubmit={
+            handleCreateComment
+          }
+        />
+
+
+        {
+          commentsLoading
+            ? (
+              <p>
+                Loading comments...
+              </p>
+            )
+            : (
+              <CommentList
+                comments={comments}
+              />
+            )
+        }
+
+      </section>
+
     </main>
   );
 }
