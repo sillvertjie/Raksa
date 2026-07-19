@@ -16,6 +16,7 @@ export class ActivityProjection implements Projection {
       "knowledge.",
       "invitation.",
       "membership.",
+      "comment.",
     ].some((prefix) =>
       event.type.startsWith(prefix),
     );

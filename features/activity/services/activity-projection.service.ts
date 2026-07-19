@@ -61,9 +61,19 @@ export class DefaultActivityProjectionService
     const payload =
       this.getPayloadRecord(event);
 
-    return typeof payload.actorId === "string"
-      ? payload.actorId
-      : undefined;
+    if (
+      typeof payload.actorId === "string"
+    ) {
+      return payload.actorId;
+    }
+
+    if (
+      typeof payload.authorId === "string"
+    ) {
+      return payload.authorId;
+    }
+
+    return undefined;
   }
 
   private resolveEntityType(
