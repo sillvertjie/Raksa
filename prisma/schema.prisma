@@ -13,6 +13,13 @@ enum ProjectStatus {
   ARCHIVED
 }
 
+enum CommentTargetType {
+  PROJECT
+  TASK
+  KNOWLEDGE_DOCUMENT
+  NOTE
+}
+
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -176,17 +183,16 @@ model KnowledgeDocumentVersion {
   document KnowledgeDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
 }
 
-
 model SearchIndexDocument {
-  id        String   @id @default(cuid())
+  id String @id @default(cuid())
 
-  scopeId    String
+  scopeId String
 
-  source    String
+  source String
 
-  title     String
+  title String
 
-  content   String
+  content String
 
   createdAt DateTime @default(now())
 
@@ -194,4 +200,39 @@ model SearchIndexDocument {
 
   @@index([scopeId])
   @@index([source])
+}
+
+// =====================================================
+// Phase 7 — Epic 6
+// DEV-196 Comments Domain
+// =====================================================
+
+model Comment {
+  id String @id @default(cuid())
+
+  workspaceId String
+
+  authorId String
+
+  targetType CommentTargetType
+  targetId   String
+
+  parentCommentId String?
+
+  content Json
+
+  normalizedText String
+
+  resolvedAt   DateTime?
+  resolvedById String?
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  parent  Comment?  @relation("CommentThread", fields: [parentCommentId], references: [id])
+  replies Comment[] @relation("CommentThread")
+
+  @@index([workspaceId, targetType, targetId])
+  @@index([parentCommentId])
 }
