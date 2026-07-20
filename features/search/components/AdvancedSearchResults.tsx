@@ -16,6 +16,20 @@ function formatDate(date: Date | string) {
   return new Date(date).toLocaleString();
 }
 
+function formatSource(
+  source: SearchIndexDocument["source"],
+) {
+  const labels = {
+    NOTE: "Note",
+    CAPTURE: "Capture",
+    PROJECT: "Project",
+    TASK: "Task",
+    KNOWLEDGE_DOCUMENT: "Knowledge Document",
+    FILE: "File",
+  };
+
+  return labels[source];
+}
 
 export function AdvancedSearchResults({
   results,
@@ -42,7 +56,7 @@ export function AdvancedSearchResults({
         <Card key={item.id}>
 
           <Text className="text-sm text-slate-500">
-            {item.source}
+            {formatSource(item.source)}
           </Text>
 
 

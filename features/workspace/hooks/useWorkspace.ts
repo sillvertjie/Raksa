@@ -15,6 +15,9 @@ export function useWorkspace() {
   const [items, setItems] =
     useState<WorkspaceItem[]>([]);
 
+  const [nextCursor, setNextCursor] =
+    useState<string | undefined>();
+
   const [loading, setLoading] =
     useState(true);
 
@@ -25,9 +28,17 @@ export function useWorkspace() {
 
       try {
         const data =
-          await getWorkspace();
+          await getWorkspace(
+            "default",
+          );
 
-        setItems(data);
+        setItems(
+          data.items,
+        );
+
+        setNextCursor(
+          data.nextCursor,
+        );
 
       } finally {
         setLoading(false);
@@ -42,6 +53,7 @@ export function useWorkspace() {
 
   return {
     items,
+    nextCursor,
     loading,
     refresh: fetchWorkspace,
   };
