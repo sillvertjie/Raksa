@@ -47,28 +47,33 @@ export class PrismaSearchIndexRepository
     query: string,
   ): Promise<SearchIndexDocument[]> {
     const documents =
-      await prisma.searchIndexDocument.findMany({
-        where: {
-          scopeId,
-          OR: [
-            {
-              title: {
-                contains: query,
-                mode: "insensitive",
-              },
-            },
-            {
-              content: {
-                contains: query,
-                mode: "insensitive",
-              },
-            },
-          ],
-        },
-        orderBy: {
-          createdAt: "desc",
-        },
-      });
+      await prisma.$queryRaw<
+        Array<{
+          id: string;
+          scopeId: string;
+          source: string;
+          title: string;
+          content: string;
+          createdAt: Date;
+          updatedAt: Date;
+        }>
+      >`
+        SELECT
+          "id",
+          "scopeId",
+          "source",
+          "title",
+          "content",
+          "createdAt",
+          "updatedAt"
+        FROM "SearchIndexDocument"
+        WHERE "scopeId" = ${scopeId}
+        AND "search_vector" @@ plainto_tsquery(
+          'simple',
+          ${query}
+        )
+        ORDER BY "createdAt" DESC
+      `;
 
     return documents.map((document) => ({
       ...document,
