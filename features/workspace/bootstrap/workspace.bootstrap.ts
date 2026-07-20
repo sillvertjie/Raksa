@@ -5,6 +5,8 @@ import { getTaskRepository } from "@/features/tasks/repositories/task.repository
 import { DefaultWorkspaceAggregationRepository } from "../repositories/workspace-aggregation.repository";
 import { DefaultWorkspaceAggregationService } from "../services/workspace-aggregation.service";
 
+import { bootstrapWorkspaceProjection } from "./workspace-projection.bootstrap";
+
 declare global {
   var workspaceAggregationService:
     | DefaultWorkspaceAggregationService
@@ -12,6 +14,8 @@ declare global {
 }
 
 function createWorkspaceAggregationService() {
+  bootstrapWorkspaceProjection();
+
   const repository =
     new DefaultWorkspaceAggregationRepository(
       getProjectRepository(),
