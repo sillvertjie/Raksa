@@ -12,4 +12,14 @@ export interface ContextBuildInput {
 
 export interface AIContext {
   content: string;
+
+  metadata?: AIContextPayload;
+
+  conversation?: {
+    id: string;
+
+    workspaceId?: string;
+
+    userId?: string;
+  };
 }

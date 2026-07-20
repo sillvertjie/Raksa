@@ -5,14 +5,26 @@ import type { ConversationMessage } from "@/ai/conversation/models/conversation-
 import type { Conversation } from "@/ai/conversation/models/conversation.model";
 import type { ConversationStorage } from "@/ai/storage/contracts/conversation-storage.interface";
 
-export class DefaultConversationManager implements ConversationManager {
+export class DefaultConversationManager
+  implements ConversationManager
+{
   constructor(
     private readonly storage: ConversationStorage,
   ) {}
 
-  async create(): Promise<Conversation> {
+  async create(
+    input?: {
+      workspaceId?: string;
+      userId?: string;
+    },
+  ): Promise<Conversation> {
     const conversation: Conversation = {
       id: randomUUID(),
+
+      workspaceId: input?.workspaceId,
+
+      userId: input?.userId,
+
       messages: [],
     };
 
@@ -21,7 +33,9 @@ export class DefaultConversationManager implements ConversationManager {
     return conversation;
   }
 
-  async getById(id: string): Promise<Conversation | null> {
+  async getById(
+    id: string,
+  ): Promise<Conversation | null> {
     return this.storage.findById(id);
   }
 
@@ -29,15 +43,23 @@ export class DefaultConversationManager implements ConversationManager {
     conversationId: string,
     message: ConversationMessage,
   ): Promise<void> {
-    const conversation = await this.storage.findById(conversationId);
+    const conversation =
+      await this.storage.findById(
+        conversationId,
+      );
 
     if (!conversation) {
-      throw new Error("Conversation not found");
+      throw new Error(
+        "Conversation not found",
+      );
     }
 
     conversation.messages ??= [];
+
     conversation.messages.push(message);
 
-    await this.storage.save(conversation);
+    await this.storage.save(
+      conversation,
+    );
   }
 }

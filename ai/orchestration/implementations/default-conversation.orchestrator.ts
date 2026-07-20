@@ -1,9 +1,9 @@
-import { ConversationManager } from "../../conversation/contracts/conversation-manager.interface";
-import { ConversationMessage } from "../../conversation/models/conversation-message.model";
-import { ContextBuilder } from "../../context/contracts/context-builder.interface";
-import { AIService } from "../../service/contracts/ai-service.interface";
+import type { ConversationManager } from "../../conversation/contracts/conversation-manager.interface";
+import type { ConversationMessage } from "../../conversation/models/conversation-message.model";
+import type { ContextBuilder } from "../../context/contracts/context-builder.interface";
+import type { AIService } from "../../service/contracts/ai-service.interface";
 
-import {
+import type {
   ConversationInput,
   ConversationOrchestrator,
   ConversationResult,
@@ -15,33 +15,57 @@ export class DefaultConversationOrchestrator
   constructor(
     private readonly conversationManager: ConversationManager,
     private readonly contextBuilder: ContextBuilder,
-    private readonly aiService: AIService
+    private readonly aiService: AIService,
   ) {}
 
   async process(
-    input: ConversationInput
+    input: ConversationInput,
   ): Promise<ConversationResult> {
     const conversationId =
       input.conversationId ??
-      (await this.conversationManager.create()).id;
+      (
+        await this.conversationManager.create({
+          workspaceId: input.workspaceId,
+          userId: input.userId,
+        })
+      ).id;
 
     await this.conversationManager.addMessage(
       conversationId,
-      this.createMessage("user", input.message)
+      this.createMessage(
+        "user",
+        input.message,
+      ),
     );
 
-    await this.contextBuilder.build({
-      conversationId,
-    });
+    const context =
+      await this.contextBuilder.build({
+        conversationId,
 
-    const response = await this.aiService.execute({
-      message: input.message,
-      conversationId,
-    });
+        additionalContext: {
+          workspace: {
+            id: input.workspaceId,
+          },
+
+          collaboration: {
+            userId: input.userId,
+          },
+        },
+      });
+    
+    const response =
+      await this.aiService.execute({
+        message: input.message,
+        conversationId,
+        context,
+      });
 
     await this.conversationManager.addMessage(
       conversationId,
-      this.createMessage("assistant", response.message)
+      this.createMessage(
+        "assistant",
+        response.message,
+      ),
     );
 
     return {
@@ -52,7 +76,7 @@ export class DefaultConversationOrchestrator
 
   private createMessage(
     role: "user" | "assistant",
-    content: string
+    content: string,
   ): ConversationMessage {
     return {
       role,

@@ -2,8 +2,11 @@ import { auth } from "@/lib/auth";
 
 import { aiRuntime } from "@/ai/bootstrap";
 
+import { workspaceContextResolver } from "@/features/collaboration/access/context/workspace-context.runtime";
+
 import type { SendAIChatDTO } from "@/features/ai-chat/dto/send-ai-chat.dto";
 import { AIChatService } from "@/features/ai-chat/services/ai-chat.service";
+
 import {
   validateAIChatMessage,
   validateConversationId,
@@ -19,13 +22,16 @@ import {
   handleApiSuccess,
 } from "@/lib/api/errors";
 
+
 const service = new AIChatService(
   aiRuntime.conversationOrchestrator,
 );
 
+
 export async function POST(request: Request) {
   try {
     const session = await auth();
+
 
     if (!session?.user?.id) {
       throw new AppError(
@@ -35,18 +41,35 @@ export async function POST(request: Request) {
       );
     }
 
+
+    const workspaceId =
+      await workspaceContextResolver.resolve(
+        session.user.id,
+      );
+
+
     const body = await request.json();
+
 
     let dto: SendAIChatDTO;
 
+
     try {
       dto = {
-        conversationId: validateConversationId(
-          body.conversationId,
-        ),
-        message: validateAIChatMessage(
-          body.message,
-        ),
+        conversationId:
+          validateConversationId(
+            body.conversationId,
+          ),
+
+        workspaceId,
+
+        userId:
+          session.user.id,
+
+        message:
+          validateAIChatMessage(
+            body.message,
+          ),
       };
     } catch (error) {
       throw new AppError(
@@ -58,10 +81,20 @@ export async function POST(request: Request) {
       );
     }
 
-    const response = await service.sendMessage(dto);
 
-    return handleApiSuccess(response);
+    const response =
+      await service.sendMessage(
+        dto,
+      );
+
+
+    return handleApiSuccess(
+      response,
+    );
+
   } catch (error) {
-    return handleApiError(error);
+    return handleApiError(
+      error,
+    );
   }
 }

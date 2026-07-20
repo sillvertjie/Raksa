@@ -1,13 +1,20 @@
-import { Conversation } from "../models/conversation.model";
-import { ConversationMessage } from "../models/conversation-message.model";
+import type { Conversation } from "../models/conversation.model";
+import type { ConversationMessage } from "../models/conversation-message.model";
 
 export interface ConversationManager {
-  create(): Promise<Conversation>;
+  create(
+    input?: {
+      workspaceId?: string;
+      userId?: string;
+    },
+  ): Promise<Conversation>;
 
-  getById(id: string): Promise<Conversation | null>;
+  getById(
+    id: string,
+  ): Promise<Conversation | null>;
 
   addMessage(
     conversationId: string,
-    message: ConversationMessage
+    message: ConversationMessage,
   ): Promise<void>;
 }

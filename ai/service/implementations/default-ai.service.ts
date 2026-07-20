@@ -25,9 +25,10 @@ export class DefaultAIService implements AIService {
   ) {}
 
   async execute(request: AIRequest): Promise<AIResponse> {
-    const context = await this.contextBuilder.build({
-      conversationId: request.conversationId,
-    });
+    const context =
+      request.context ?? {
+        content: "",
+      };
 
     const prompt = this.promptRenderer.render({
       template: DEFAULT_PROMPT_TEMPLATE,

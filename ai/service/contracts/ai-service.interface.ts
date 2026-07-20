@@ -1,10 +1,18 @@
+import type { AIContext } from "@/ai/context/contracts/context-builder.interface";
+
 export interface AIService {
-  execute(request: AIRequest): Promise<AIResponse>;
+  execute(
+    request: AIRequest
+  ): Promise<AIResponse>;
 }
 
 export interface AIRequest {
   message: string;
+
   conversationId?: string;
+
+  context?: AIContext;
+
   options?: Record<string, unknown>;
 }
 

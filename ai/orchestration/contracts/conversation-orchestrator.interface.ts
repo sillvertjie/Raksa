@@ -6,6 +6,11 @@ export interface ConversationOrchestrator {
 
 export interface ConversationInput {
   conversationId?: string;
+
+  workspaceId?: string;
+
+  userId?: string;
+
   message: string;
 }
 

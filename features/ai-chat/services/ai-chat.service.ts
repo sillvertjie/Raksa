@@ -4,14 +4,19 @@ import type { SendAIChatDTO } from "../dto/send-ai-chat.dto";
 
 export class AIChatService {
   constructor(
-    private readonly conversationOrchestrator: ConversationOrchestrator
+    private readonly conversationOrchestrator: ConversationOrchestrator,
   ) {}
 
   async sendMessage(
-    input: SendAIChatDTO
+    input: SendAIChatDTO,
   ) {
     return this.conversationOrchestrator.process({
       conversationId: input.conversationId,
+
+      workspaceId: input.workspaceId,
+
+      userId: input.userId,
+
       message: input.message,
     });
   }
