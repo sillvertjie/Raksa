@@ -8,6 +8,31 @@ import type {
   WorkspaceReadModelListOptions,
 } from "../contracts/workspace-read-model.repository.interface";
 
+interface WorkspaceCursor {
+  updatedAt: string;
+  id: string;
+}
+
+function encodeCursor(
+  cursor: WorkspaceCursor,
+): string {
+  return Buffer.from(
+    JSON.stringify(cursor),
+  ).toString("base64");
+}
+
+function decodeCursor(
+  cursor?: string,
+): WorkspaceCursor | null {
+  if (!cursor) {
+    return null;
+  }
+
+  return JSON.parse(
+    Buffer.from(cursor, "base64").toString(),
+  ) as WorkspaceCursor;
+}
+
 export class InMemoryWorkspaceReadModelRepository
   implements WorkspaceReadModelRepository
 {
@@ -19,7 +44,10 @@ export class InMemoryWorkspaceReadModelRepository
   async save(
     entity: WorkspaceReadModelEntity,
   ): Promise<WorkspaceReadModelEntity> {
-    this.items.set(entity.id, entity);
+    this.items.set(
+      entity.id,
+      entity,
+    );
 
     return entity;
   }
@@ -27,7 +55,10 @@ export class InMemoryWorkspaceReadModelRepository
   async update(
     entity: WorkspaceReadModelEntity,
   ): Promise<WorkspaceReadModelEntity> {
-    this.items.set(entity.id, entity);
+    this.items.set(
+      entity.id,
+      entity,
+    );
 
     return entity;
   }
@@ -49,7 +80,8 @@ export class InMemoryWorkspaceReadModelRepository
   ): Promise<WorkspaceReadModelEntity | null> {
     return (
       Array.from(this.items.values()).find(
-        (item) => item.itemId === itemId,
+        (item) =>
+          item.itemId === itemId,
       ) ?? null
     );
   }
@@ -57,56 +89,97 @@ export class InMemoryWorkspaceReadModelRepository
   async list(
     options: WorkspaceReadModelListOptions,
   ): Promise<WorkspaceReadModelPage> {
-    const page = options.page ?? 1;
-    const limit = options.limit ?? 20;
+    const limit =
+      options.limit ?? 20;
 
-    let result = Array.from(
-      this.items.values(),
-    ).filter(
-      (item) =>
-        item.workspaceId ===
-        options.workspaceId,
-    );
+    const cursor =
+      decodeCursor(options.cursor);
 
-    if (options.permissionScope) {
-      result = result.filter(
-        (item) =>
-          item.permissionScope ===
-          options.permissionScope,
-      );
-    }
+    let result =
+      Array.from(this.items.values())
+        .filter(
+          (item) =>
+            item.workspaceId ===
+            options.workspaceId,
+        );
 
     if (options.itemType) {
-      result = result.filter(
-        (item) =>
-          item.itemType === options.itemType,
-      );
+      result =
+        result.filter(
+          (item) =>
+            item.itemType ===
+            options.itemType,
+        );
     }
 
     result.sort(
-      (a, b) =>
-        b.updatedAt.getTime() -
-        a.updatedAt.getTime(),
+      (a, b) => {
+        const updatedCompare =
+          b.updatedAt.getTime() -
+          a.updatedAt.getTime();
+
+        if (updatedCompare !== 0) {
+          return updatedCompare;
+        }
+
+        return b.id.localeCompare(a.id);
+      },
     );
 
-    const total = result.length;
+    if (cursor) {
+      result =
+        result.filter(
+          (item) => {
+            const itemDate =
+              item.updatedAt.getTime();
 
-    const start =
-      (page - 1) * limit;
+            const cursorDate =
+              new Date(
+                cursor.updatedAt,
+              ).getTime();
 
-    const items = result.slice(
-      start,
-      start + limit,
-    );
+            if (itemDate < cursorDate) {
+              return true;
+            }
+
+            if (itemDate > cursorDate) {
+              return false;
+            }
+
+            return item.id < cursor.id;
+          },
+        );
+    }
+
+    const items =
+      result.slice(
+        0,
+        limit + 1,
+      );
+
+    const hasNext =
+      items.length > limit;
+
+    const paginatedItems =
+      hasNext
+        ? items.slice(0, limit)
+        : items;
+
+    const lastItem =
+      paginatedItems[
+        paginatedItems.length - 1
+      ];
 
     return {
-      items,
-      total,
-      page,
-      limit,
-      hasNext:
-        start + limit < total,
-      hasPrevious: page > 1,
+      items: paginatedItems,
+      nextCursor:
+        hasNext && lastItem
+          ? encodeCursor({
+              updatedAt:
+                lastItem.updatedAt.toISOString(),
+              id: lastItem.id,
+            })
+          : undefined,
     };
   }
 }

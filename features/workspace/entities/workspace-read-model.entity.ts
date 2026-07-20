@@ -31,13 +31,6 @@ export interface WorkspaceReadModelEntity extends BaseEntity {
 export interface WorkspaceReadModelPage {
   items: WorkspaceReadModelEntity[];
 
-  total: number;
-
-  page: number;
-
-  limit: number;
-
-  hasNext: boolean;
-
-  hasPrevious: boolean;
+  nextCursor?: string;
+  
 }

@@ -6,35 +6,35 @@ import {
 export interface WorkspaceReadModelListOptions {
   workspaceId: string;
 
-  page?: number;
+  cursor?: string;
 
   limit?: number;
-
-  permissionScope?: string;
 
   itemType?: WorkspaceReadModelEntity["itemType"];
 }
 
 export interface WorkspaceReadModelRepository {
   save(
-    entity: WorkspaceReadModelEntity
+    entity: WorkspaceReadModelEntity,
   ): Promise<WorkspaceReadModelEntity>;
 
   update(
-    entity: WorkspaceReadModelEntity
+    entity: WorkspaceReadModelEntity,
   ): Promise<WorkspaceReadModelEntity>;
 
-  delete(id: string): Promise<void>;
+  delete(
+    id: string,
+  ): Promise<void>;
 
   findById(
-    id: string
+    id: string,
   ): Promise<WorkspaceReadModelEntity | null>;
 
   findByItemId(
-    itemId: string
+    itemId: string,
   ): Promise<WorkspaceReadModelEntity | null>;
 
   list(
-    options: WorkspaceReadModelListOptions
+    options: WorkspaceReadModelListOptions,
   ): Promise<WorkspaceReadModelPage>;
 }
