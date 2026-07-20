@@ -5,7 +5,8 @@ export type SearchSource =
   | "CAPTURE"
   | "PROJECT"
   | "TASK"
-  | "KNOWLEDGE_DOCUMENT";
+  | "KNOWLEDGE_DOCUMENT"
+  | "FILE";
 
 export interface SearchIndexDocument extends BaseEntity {
   scopeId: string;

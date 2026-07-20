@@ -1,11 +1,12 @@
-import type { SearchSourceReader } from "../contracts/search-source-reader.interface";
+import type { TaskSearchReaderContract }
+from "../contracts/task-search-reader.interface";
 
 import type { TaskRepository } from "@/features/tasks/contracts/task-repository.interface";
 
 import type { Task } from "@/features/tasks/entities/task.entity";
 
 export class TaskSearchReader
-  implements SearchSourceReader
+  implements TaskSearchReaderContract
 {
   constructor(
     private readonly repository: TaskRepository,
