@@ -4,9 +4,29 @@ import DashboardClient from "@/components/dashboard/DashboardClient";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-slate-100 py-10">
+    <main
+      className="
+        min-h-screen
+        w-full
+        min-w-0
+        overflow-x-hidden
+        bg-raksa-background
+        py-10
+      "
+    >
       <Container>
-        <div className="rounded-xl bg-white p-8 shadow-lg">
+        <div
+          className="
+            w-full
+            min-w-0
+            max-w-full
+            overflow-hidden
+            rounded-xl
+            bg-raksa-surface
+            p-8
+            shadow-lg
+          "
+        >
           <DashboardClient />
         </div>
       </Container>

@@ -2,11 +2,22 @@ import React from "react";
 
 type Props = React.HTMLAttributes<HTMLDivElement>;
 
-export default function Container(props: Props) {
+export default function Container({
+  className,
+  ...props
+}: Props) {
   return (
     <div
       {...props}
-      className={`mx-auto max-w-2xl px-4 ${props.className ?? ""}`}
+      className={`
+        mx-auto
+        w-full
+        max-w-7xl
+        min-w-0
+        overflow-hidden
+        px-4
+        ${className ?? ""}
+      `}
     />
   );
 }

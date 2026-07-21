@@ -87,7 +87,19 @@ export default function CaptureItem({
   }
 
   return (
-    <div className="rounded-lg border p-4 shadow-sm">
+    <div
+      className="
+        w-full
+        min-w-0
+        overflow-hidden
+        rounded-lg
+        border
+        border-raksa-border
+        bg-raksa-surface
+        p-4
+        shadow-sm
+      "
+    >
       {isEditing ? (
         <Textarea
           rows={4}
@@ -100,24 +112,52 @@ export default function CaptureItem({
           disabled={updating}
         />
       ) : (
-        <p className="whitespace-pre-wrap">
+        <p
+          className="
+            w-full
+            min-w-0
+            overflow-hidden
+            break-all
+            whitespace-pre-wrap
+            text-raksa-text-primary
+          "
+        >
           {capture.content}
         </p>
       )}
 
       {error && (
-        <p className="mt-2 text-sm text-red-500">
+        <p
+          className="
+            mt-2
+            text-sm
+            text-red-400
+          "
+        >
           {error}
         </p>
       )}
 
-      <p className="mt-2 text-sm text-gray-500">
+      <p
+        className="
+          mt-2
+          text-sm
+          text-raksa-text-secondary
+        "
+      >
         {new Date(
           capture.createdAt
         ).toLocaleString()}
       </p>
 
-      <div className="mt-4 flex gap-2">
+      <div
+        className="
+          mt-4
+          flex
+          flex-wrap
+          gap-2
+        "
+      >
         {isEditing ? (
           <>
             <Button

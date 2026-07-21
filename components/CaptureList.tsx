@@ -75,7 +75,13 @@ const CaptureList = forwardRef<
     }
 
     return (
-      <div className="space-y-4">
+      <div
+        className="
+          w-full
+          min-w-0
+          space-y-4
+        "
+      >
         {captures.map((capture) => (
           <CaptureItem
             key={capture.id}

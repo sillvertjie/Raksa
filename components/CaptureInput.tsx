@@ -26,7 +26,20 @@ export default function CaptureInput({
   return (
     <div className="space-y-3">
       <textarea
-        className="w-full rounded-lg border p-3"
+        className="
+          w-full
+          rounded-lg
+          border
+          border-raksa-border
+          bg-raksa-surface
+          p-3
+          text-raksa-text-primary
+          placeholder:text-raksa-text-secondary
+          outline-none
+          focus:ring-2
+          focus:ring-raksa-primary
+          disabled:opacity-50
+        "
         rows={4}
         placeholder="Write something..."
         value={content}

@@ -38,9 +38,19 @@ export default function SummarySection() {
           overview of your workspace.
         </Text>
 
-        <div className="mt-6 grid gap-4 md:grid-cols-3">
+        <div
+          className="
+            mt-6
+            grid
+            min-w-0
+            gap-4
+            md:grid-cols-3
+          "
+        >
           <Card>
-            <Text>Total Notes</Text>
+            <Text>
+              Total Notes
+            </Text>
 
             <Heading className="mt-2">
               {summary.totalNotes}
@@ -48,19 +58,36 @@ export default function SummarySection() {
           </Card>
 
           <Card>
-            <Text>Total Captures</Text>
+            <Text>
+              Total Captures
+            </Text>
 
             <Heading className="mt-2">
               {summary.totalCaptures}
             </Heading>
           </Card>
 
-          <Card>
-            <Text>Latest Capture</Text>
+          <Card
+            className="
+              min-w-0
+              overflow-hidden
+            "
+          >
+            <Text>
+              Latest Capture
+            </Text>
 
-            <Heading className="mt-2 text-base">
-              {summary.latestCapture ??
-                "-"}
+            <Heading
+              className="
+                mt-2
+                min-w-0
+                overflow-hidden
+                break-all
+                text-base
+                text-raksa-text-primary
+              "
+            >
+              {summary.latestCapture ?? "-"}
             </Heading>
           </Card>
         </div>
@@ -69,8 +96,15 @@ export default function SummarySection() {
   }
 
   return (
-    <section className="mt-10">
-      <Heading>Overview</Heading>
+    <section
+      className="
+        mt-10
+        min-w-0
+      "
+    >
+      <Heading>
+        Overview
+      </Heading>
 
       {content}
     </section>

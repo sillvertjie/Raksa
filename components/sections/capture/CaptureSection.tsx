@@ -12,8 +12,13 @@ interface CaptureSectionProps {
   error: string | null;
   updatingId: string | null;
   deletingId: string | null;
+
   onDelete: (id: string) => Promise<void>;
-  onSave: (id: string, content: string) => Promise<void>;
+
+  onSave: (
+    id: string,
+    content: string
+  ) => Promise<void>;
 }
 
 export default function CaptureSection({
@@ -25,21 +30,27 @@ export default function CaptureSection({
   onDelete,
   onSave,
 }: CaptureSectionProps) {
-return (
-  <section className="mt-10">
-    <SectionTitle className="mb-4">
-      Recent Captures
-    </SectionTitle>
+  return (
+    <section
+      className="
+        mt-10
+        w-full
+        min-w-0
+      "
+    >
+      <SectionTitle className="mb-4">
+        Recent Captures
+      </SectionTitle>
 
-    <CaptureList
-      captures={captures}
-      loading={loading}
-      error={error}
-      updatingId={updatingId}
-      deletingId={deletingId}
-      onDelete={onDelete}
-      onSave={onSave}
-    />
-  </section>
-);
+      <CaptureList
+        captures={captures}
+        loading={loading}
+        error={error}
+        updatingId={updatingId}
+        deletingId={deletingId}
+        onDelete={onDelete}
+        onSave={onSave}
+      />
+    </section>
+  );
 }

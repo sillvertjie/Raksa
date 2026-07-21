@@ -1,37 +1,42 @@
+// design-system/color.ts
+
 export const colors = {
-  primary: "primary",
-  secondary: "secondary",
+  // Brand / Primary Colors
+  primary: "bg-raksa-primary",
+  primaryForeground: "text-slate-950", // Teks gelap di atas background primary terang (atau sebaliknya)
+  primaryText: "text-raksa-primary",   // Jika ingin membuat teks berwarna aksen primary
 
-  background: "background",
-  foreground: "foreground",
+  // Base Layout & Surfaces
+  background: "bg-raksa-background",
+  foreground: "text-raksa-text-primary",
 
-  card: "card",
-  cardForeground: "card-foreground",
+  card: "bg-raksa-surface",
+  cardForeground: "text-raksa-text-primary",
 
-  popover: "popover",
-  popoverForeground: "popover-foreground",
+  surface: "bg-raksa-surface",
+  surfaceSecondary: "bg-raksa-surface-muted",
 
-  muted: "muted",
-  mutedForeground: "muted-foreground",
+  // Borders & Dividers
+  border: "border-raksa-border",
 
-  accent: "accent",
-  accentForeground: "accent-foreground",
+  // Typography Tokens
+  textPrimary: "text-raksa-text-primary",
+  textSecondary: "text-raksa-text-secondary",
+  textMuted: "text-raksa-text-secondary",
+  // Muted States
+  muted: "bg-raksa-surface-muted",
+  mutedForeground: "text-raksa-text-secondary",
 
-  border: "border-gray-200",
-  input: "input",
-  ring: "ring",
+  // Input & Form Elements (Mencegah Bug Quick Capture)
+  input: "bg-raksa-surface text-raksa-text-primary placeholder:text-slate-500",
 
-  destructive: "destructive",
-  destructiveForeground: "destructive-foreground",
+  // Feedback / States
+  destructive: "bg-red-500",
+  destructiveForeground: "text-white",
 
-  textPrimary: "text-gray-900",
-  textSecondary: "text-gray-700",
-  textMuted: "text-gray-500",
-
-  surface: "bg-white",
-  surfaceSecondary: "bg-gray-50",
-
-  buttonPrimary: "bg-black text-white",
+  // Component Specific Wrappers
+  buttonPrimary: "bg-raksa-primary text-slate-950 hover:bg-raksa-primary/90 font-medium",
+  buttonSecondary: "bg-raksa-surface-muted text-raksa-text-primary hover:bg-raksa-surface",
 } as const;
 
 export type ColorToken = keyof typeof colors;

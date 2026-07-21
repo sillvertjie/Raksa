@@ -27,7 +27,13 @@ export function KnowledgeDocumentViewer({
           {document.title}
         </h1>
 
-        <p className="mt-2 text-sm text-gray-500">
+        <p
+          className="
+            mt-2
+            text-sm
+            text-raksa-text-secondary
+          "
+          >
           Version {version?.versionNumber ?? "-"}
         </p>
       </header>
