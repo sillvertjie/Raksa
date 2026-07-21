@@ -1,8 +1,11 @@
 import React from "react";
 
-import { typography } from "@/lib/design-system";
+import {
+  typography,
+} from "@/lib/design-system";
 
-type Props = React.HTMLAttributes<HTMLParagraphElement>;
+type Props =
+  React.HTMLAttributes<HTMLParagraphElement>;
 
 export default function Text({
   className,
@@ -13,7 +16,6 @@ export default function Text({
       {...props}
       className={`
         ${typography.body}
-        ${typography.muted}
         ${className ?? ""}
       `}
     />

@@ -1,3 +1,14 @@
+import { colors } from "@/lib/design-system";
+
 export default function Loading() {
-  return <p className="text-sm text-gray-500">Loading...</p>;
+  return (
+    <p
+      className={`
+        text-sm
+        ${colors.textMuted}
+      `}
+    >
+      Loading...
+    </p>
+  );
 }

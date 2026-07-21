@@ -14,6 +14,13 @@
 
   --raksa-text-primary: #f9fafb;
   --raksa-text-secondary: #9ca3af;
+    --raksa-text-primary: #f9fafb;
+  --raksa-text-secondary: #9ca3af;
+  --raksa-text-muted: #6b7280;
+
+  --raksa-danger: #ef4444;
+
+  --raksa-overlay: rgba(0, 0, 0, 0.5);
 
 
   /* Compatibility Tokens */
@@ -53,6 +60,12 @@
 
   --color-raksa-text-primary: var(--raksa-text-primary);
   --color-raksa-text-secondary: var(--raksa-text-secondary);
+
+    --color-raksa-text-muted: var(--raksa-text-muted);
+
+  --color-raksa-danger: var(--raksa-danger);
+
+  --color-raksa-overlay: var(--raksa-overlay);
 }
 
 body {

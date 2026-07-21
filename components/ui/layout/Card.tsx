@@ -3,6 +3,7 @@ import React from "react";
 import {
   colors,
   radius,
+  shadows,
   spacing,
 } from "@/lib/design-system";
 
@@ -21,6 +22,7 @@ export default function Card({
         border
         ${radius.lg}
         ${spacing.cardPaddingSm}
+        ${shadows.card}
         ${className ?? ""}
       `}
     />

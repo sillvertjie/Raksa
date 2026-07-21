@@ -1,14 +1,30 @@
 import React from "react";
 
-type Props = React.HTMLAttributes<HTMLDivElement> & {
-  gap?: number;
-};
+const gapMap = {
+  2: "gap-2",
+  4: "gap-4",
+  6: "gap-6",
+} as const;
 
-export default function Stack({ gap = 4, className, ...props }: Props) {
+type Props =
+  React.HTMLAttributes<HTMLDivElement> & {
+    gap?: keyof typeof gapMap;
+  };
+
+export default function Stack({
+  gap = 4,
+  className,
+  ...props
+}: Props) {
   return (
     <div
       {...props}
-      className={`flex flex-col gap-${gap} ${className ?? ""}`}
+      className={`
+        flex
+        flex-col
+        ${gapMap[gap]}
+        ${className ?? ""}
+      `}
     />
   );
 }

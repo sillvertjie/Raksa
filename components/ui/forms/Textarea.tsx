@@ -1,4 +1,6 @@
-import { TextareaHTMLAttributes } from "react";
+import {
+  TextareaHTMLAttributes,
+} from "react";
 
 import {
   colors,
@@ -18,14 +20,13 @@ export default function Textarea({
       {...props}
       className={`
         w-full
-        ${colors.surface}
+        ${colors.input}
         ${colors.border}
         border
         ${radius.lg}
         ${spacing.input}
         outline-none
-        focus:ring-2
-        focus:ring-black
+        ${colors.ring}
         ${className}
       `}
     />

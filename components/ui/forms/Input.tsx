@@ -6,7 +6,8 @@ import {
   spacing,
 } from "@/lib/design-system";
 
-type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
+type InputProps =
+  React.InputHTMLAttributes<HTMLInputElement>;
 
 export default function Input({
   className,
@@ -17,7 +18,7 @@ export default function Input({
       {...props}
       className={`
         w-full
-        ${colors.surface}
+        ${colors.input}
         ${colors.border}
         border
         ${radius.lg}
