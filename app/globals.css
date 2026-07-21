@@ -1,22 +1,58 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Raksa Color Foundation */
+
+  --raksa-background: #0b0f19;
+  --raksa-surface: #111827;
+  --raksa-surface-muted: #1f2937;
+
+  --raksa-border: #374151;
+
+  --raksa-primary: #6366f1;
+  --raksa-primary-hover: #7c3aed;
+
+  --raksa-text-primary: #f9fafb;
+  --raksa-text-secondary: #9ca3af;
+
+
+  /* Compatibility Tokens */
+
+  --background: var(--raksa-background);
+  --foreground: var(--raksa-text-primary);
+
+
+  /* Raksa Spacing Foundation */
+
+  --raksa-space-xs: 0.25rem;
+  --raksa-space-sm: 0.5rem;
+  --raksa-space-md: 1rem;
+  --raksa-space-lg: 1.5rem;
+  --raksa-space-xl: 2rem;
 }
+
+  /* Raksa default experience uses dark workspace theme */
+
+  /* Raksa Color Foundation */
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-raksa-background: var(--raksa-background);
+  --color-raksa-surface: var(--raksa-surface);
+  --color-raksa-surface-muted: var(--raksa-surface-muted);
+
+  --color-raksa-border: var(--raksa-border);
+
+  --color-raksa-primary: var(--raksa-primary);
+  --color-raksa-primary-hover: var(--raksa-primary-hover);
+
+  --color-raksa-text-primary: var(--raksa-text-primary);
+  --color-raksa-text-secondary: var(--raksa-text-secondary);
 }
 
 body {
