@@ -1,14 +1,31 @@
 import { colors } from "@/lib/design-system";
 
-export default function Loading() {
+interface LoadingProps {
+  message?: string;
+}
+
+export default function Loading({
+  message = "Loading...",
+}: LoadingProps) {
   return (
-    <p
-      className={`
-        text-sm
-        ${colors.textMuted}
-      `}
+    <div
+      role="status"
+      aria-live="polite"
+      aria-busy="true"
+      className="
+        flex
+        items-center
+        justify-center
+      "
     >
-      Loading...
-    </p>
+      <p
+        className={`
+          text-sm
+          ${colors.textMuted}
+        `}
+      >
+        {message}
+      </p>
+    </div>
   );
 }

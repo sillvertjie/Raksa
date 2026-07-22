@@ -1,3 +1,5 @@
+import { useEffect, useId, useRef } from "react";
+
 import {
   colors,
   radius,
@@ -26,6 +28,38 @@ export default function Dialog({
   onConfirm,
   onCancel,
 }: DialogProps) {
+  const titleId = useId();
+  const descriptionId = useId();
+
+  const cancelButtonRef = useRef<HTMLButtonElement>(null);
+  const previousFocusedElementRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (!open) return;
+
+    previousFocusedElementRef.current =
+      document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null;
+
+    cancelButtonRef.current?.focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && !loading) {
+        event.preventDefault();
+        onCancel();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+
+      previousFocusedElementRef.current?.focus();
+    };
+  }, [loading, onCancel, open]);
+
   if (!open) return null;
 
   return (
@@ -40,6 +74,12 @@ export default function Dialog({
       `}
     >
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        aria-describedby={
+          description ? descriptionId : undefined
+        }
         className={`
           w-full
           max-w-md
@@ -50,6 +90,7 @@ export default function Dialog({
         `}
       >
         <h2
+          id={titleId}
           className="
             text-lg
             font-semibold
@@ -61,6 +102,7 @@ export default function Dialog({
 
         {description && (
           <p
+            id={descriptionId}
             className="
               mt-2
               text-sm
@@ -80,6 +122,7 @@ export default function Dialog({
           "
         >
           <Button
+            ref={cancelButtonRef}
             onClick={onCancel}
             disabled={loading}
             className={colors.buttonSecondary}
@@ -89,11 +132,10 @@ export default function Dialog({
 
           <Button
             onClick={onConfirm}
-            disabled={loading}
+            loading={loading}
+            loadingText="Deleting..."
           >
-            {loading
-              ? "Deleting..."
-              : "Confirm"}
+            Confirm
           </Button>
         </div>
       </div>

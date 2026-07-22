@@ -1,20 +1,55 @@
+import { ReactNode } from "react";
+
 import { colors } from "@/lib/design-system";
 
 interface EmptyStateProps {
-  message?: string;
+  title?: string;
+  description?: string;
+  action?: ReactNode;
 }
 
 export default function EmptyState({
-  message = "No data available",
+  title = "Nothing here yet",
+  description = "There is no content to display.",
+  action,
 }: EmptyStateProps) {
   return (
-    <p
-      className={`
-        text-sm
-        ${colors.textMuted}
-      `}
+    <div
+      className="
+        flex
+        flex-col
+        items-center
+        justify-center
+        gap-3
+        py-8
+        text-center
+      "
     >
-      {message}
-    </p>
+      <h3
+        className="
+          text-base
+          font-semibold
+          text-raksa-text-primary
+        "
+      >
+        {title}
+      </h3>
+
+      <p
+        className={`
+          max-w-md
+          text-sm
+          ${colors.textMuted}
+        `}
+      >
+        {description}
+      </p>
+
+      {action && (
+        <div className="mt-2">
+          {action}
+        </div>
+      )}
+    </div>
   );
 }

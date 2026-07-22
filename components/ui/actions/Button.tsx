@@ -12,17 +12,24 @@ interface ButtonProps
   loadingText?: string;
 }
 
-export default function Button({
-  loading = false,
-  loadingText = "Loading...",
-  disabled,
-  children,
-  className,
-  ...props
-}: ButtonProps) {
+const Button = React.forwardRef<
+  HTMLButtonElement,
+  ButtonProps
+>(function Button(
+  {
+    loading = false,
+    loadingText = "Loading...",
+    disabled,
+    children,
+    className,
+    ...props
+  },
+  ref,
+) {
   return (
     <button
       {...props}
+      ref={ref}
       disabled={disabled || loading}
       className={`
         ${colors.buttonPrimary}
@@ -37,4 +44,8 @@ export default function Button({
       {loading ? loadingText : children}
     </button>
   );
-}
+});
+
+Button.displayName = "Button";
+
+export default Button;
