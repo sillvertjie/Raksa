@@ -8,6 +8,10 @@ import {
   Textarea,
 } from "@/components/ui";
 
+import {
+  formatCaptureDate,
+} from "@/features/capture/utils/date";
+
 import type { Capture } from "@/features/capture/types/capture";
 
 interface CaptureItemProps {
@@ -138,17 +142,30 @@ export default function CaptureItem({
         </p>
       )}
 
-      <p
+      <div
         className="
           mt-2
           text-sm
           text-raksa-text-secondary
         "
       >
-        {new Date(
-          capture.createdAt
-        ).toLocaleString()}
-      </p>
+        <p>
+          Created •{" "}
+          {formatCaptureDate(
+            capture.createdAt
+          )}
+        </p>
+
+        {capture.createdAt !==
+          capture.updatedAt && (
+          <p>
+            Updated •{" "}
+            {formatCaptureDate(
+              capture.updatedAt
+            )}
+          </p>
+        )}
+      </div>
 
       <div
         className="

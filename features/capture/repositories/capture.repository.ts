@@ -27,19 +27,29 @@ export class CaptureRepository {
     });
   }
 
-  async update(
-    id: string,
-    userId: string,
-    data: UpdateCaptureDTO
-  ) {
-    return prisma.capture.updateMany({
-      where: {
-        id,
-        userId,
-      },
-      data,
-    });
+async update(
+  id: string,
+  userId: string,
+  data: UpdateCaptureDTO
+) {
+  const existing = await prisma.capture.findFirst({
+    where: {
+      id,
+      userId,
+    },
+  });
+
+  if (!existing) {
+    throw new Error("Capture not found.");
   }
+
+  return prisma.capture.update({
+    where: {
+      id,
+    },
+    data,
+  });
+}
 
   async delete(
     id: string,
