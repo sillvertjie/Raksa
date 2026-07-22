@@ -44,10 +44,20 @@ export class NoteRepository {
     userId: string,
     data: UpdateNoteDTO
   ) {
-    return prisma.note.updateMany({
+    const existing = await prisma.note.findFirst({
       where: {
         id,
         userId,
+      },
+    });
+
+    if (!existing) {
+      throw new Error("Note not found.");
+    }
+
+    return prisma.note.update({
+      where: {
+        id,
       },
       data,
     });
