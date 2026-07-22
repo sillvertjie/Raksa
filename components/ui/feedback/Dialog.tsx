@@ -1,6 +1,10 @@
 "use client";
 
-import { useEffect, useId, useRef } from "react";
+import {
+  useEffect,
+  useId,
+  useRef,
+} from "react";
 
 import {
   colors,
@@ -33,8 +37,14 @@ export default function Dialog({
   const titleId = useId();
   const descriptionId = useId();
 
-  const cancelButtonRef = useRef<HTMLButtonElement>(null);
-  const previousFocusedElementRef = useRef<HTMLElement | null>(null);
+  const dialogRef =
+    useRef<HTMLDivElement>(null);
+
+  const cancelButtonRef =
+    useRef<HTMLButtonElement>(null);
+
+  const previousFocusedElementRef =
+    useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     if (!open) return;
@@ -46,23 +56,88 @@ export default function Dialog({
 
     cancelButtonRef.current?.focus();
 
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape" && !loading) {
+    function handleKeyDown(
+      event: KeyboardEvent
+    ) {
+      if (
+        event.key === "Escape" &&
+        !loading
+      ) {
         event.preventDefault();
-        onCancel();
-      }
-    };
 
-    document.addEventListener("keydown", handleKeyDown);
+        onCancel();
+
+        return;
+      }
+
+      if (event.key !== "Tab") {
+        return;
+      }
+
+      const focusableElements =
+        dialogRef.current?.querySelectorAll<HTMLElement>(
+          `
+          button,
+          input,
+          textarea,
+          select,
+          [tabindex]:not([tabindex="-1"])
+          `
+        );
+
+      if (!focusableElements?.length) {
+        return;
+      }
+
+      const firstElement =
+        focusableElements[0];
+
+      const lastElement =
+        focusableElements[
+          focusableElements.length - 1
+        ];
+
+      if (
+        event.shiftKey &&
+        document.activeElement === firstElement
+      ) {
+        event.preventDefault();
+
+        lastElement.focus();
+      }
+
+      if (
+        !event.shiftKey &&
+        document.activeElement === lastElement
+      ) {
+        event.preventDefault();
+
+        firstElement.focus();
+      }
+    }
+
+    document.addEventListener(
+      "keydown",
+      handleKeyDown
+    );
 
     return () => {
-      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener(
+        "keydown",
+        handleKeyDown
+      );
 
       previousFocusedElementRef.current?.focus();
     };
-  }, [loading, onCancel, open]);
+  }, [
+    loading,
+    onCancel,
+    open,
+  ]);
 
-  if (!open) return null;
+  if (!open) {
+    return null;
+  }
 
   return (
     <div
@@ -76,11 +151,14 @@ export default function Dialog({
       `}
     >
       <div
+        ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
         aria-describedby={
-          description ? descriptionId : undefined
+          description
+            ? descriptionId
+            : undefined
         }
         className={`
           w-full
@@ -127,7 +205,9 @@ export default function Dialog({
             ref={cancelButtonRef}
             onClick={onCancel}
             disabled={loading}
-            className={colors.buttonSecondary}
+            className={
+              colors.buttonSecondary
+            }
           >
             Cancel
           </Button>
