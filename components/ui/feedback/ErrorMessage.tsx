@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 
+import { feedbackContent } from "@/lib/content-language";
 import { colors } from "@/lib/design-system";
 
 interface ErrorMessageProps {
@@ -9,7 +10,7 @@ interface ErrorMessageProps {
 }
 
 export default function ErrorMessage({
-  title = "Something went wrong",
+  title = feedbackContent.error.defaultTitle,
   message,
   action,
 }: ErrorMessageProps) {

@@ -1,3 +1,4 @@
+import { feedbackContent } from "@/lib/content-language";
 import { colors } from "@/lib/design-system";
 
 interface LoadingProps {
@@ -5,7 +6,7 @@ interface LoadingProps {
 }
 
 export default function Loading({
-  message = "Loading...",
+  message = feedbackContent.loading.defaultMessage,
 }: LoadingProps) {
   return (
     <div

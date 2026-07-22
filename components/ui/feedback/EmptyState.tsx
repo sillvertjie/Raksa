@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 
+import { feedbackContent } from "@/lib/content-language";
 import { colors } from "@/lib/design-system";
 
 interface EmptyStateProps {
@@ -9,8 +10,8 @@ interface EmptyStateProps {
 }
 
 export default function EmptyState({
-  title = "Nothing here yet",
-  description = "There is no content to display.",
+  title = feedbackContent.emptyState.defaultTitle,
+  description = feedbackContent.emptyState.defaultDescription,
   action,
 }: EmptyStateProps) {
   return (
