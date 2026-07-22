@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import {
   Button,
+  Dialog,
   Heading,
   Input,
   Text,
@@ -28,7 +29,9 @@ interface NoteCardProps {
     content: string
   ) => Promise<void>;
 
-  onDelete: (id: string) => Promise<void>;
+  onDelete: (
+    id: string
+  ) => Promise<void>;
 }
 
 export default function NoteCard({
@@ -43,6 +46,9 @@ export default function NoteCard({
   onDelete,
 }: NoteCardProps) {
   const [editing, setEditing] =
+    useState(false);
+
+  const [deleteDialogOpen, setDeleteDialogOpen] =
     useState(false);
 
   const [editTitle, setEditTitle] =
@@ -69,15 +75,9 @@ export default function NoteCard({
   }
 
   async function handleDelete() {
-    const confirmed = window.confirm(
-      "Delete this note?"
-    );
-
-    if (!confirmed) {
-      return;
-    }
-
     await onDelete(id);
+
+    setDeleteDialogOpen(false);
   }
 
   function handleCancel() {
@@ -131,52 +131,78 @@ export default function NoteCard({
   }
 
   return (
-    <article className="rounded-xl border bg-white p-5 shadow-sm">
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex-1">
-          <Heading className="text-lg">
-            {title}
-          </Heading>
+    <>
+      <article className="rounded-xl border bg-white p-5 shadow-sm">
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex-1">
+            <Heading className="text-lg">
+              {title}
+            </Heading>
 
-          <Text className="mt-2 whitespace-pre-wrap text-slate-600">
-            {content}
-          </Text>
-
-          <div className="mt-4 space-y-1">
-            <Text className="text-xs text-slate-500">
-              Created • {formatNoteDate(createdAt)}
+            <Text className="mt-2 whitespace-pre-wrap text-slate-600">
+              {content}
             </Text>
 
-            {createdAt !== updatedAt && (
+            <div className="mt-4 space-y-1">
               <Text className="text-xs text-slate-500">
-                Updated • {formatNoteDate(updatedAt)}
+                Created •{" "}
+                {formatNoteDate(
+                  createdAt
+                )}
               </Text>
-            )}
+
+              {createdAt !==
+                updatedAt && (
+                <Text className="text-xs text-slate-500">
+                  Updated •{" "}
+                  {formatNoteDate(
+                    updatedAt
+                  )}
+                </Text>
+              )}
+            </div>
+          </div>
+
+          <div className="flex gap-2">
+            <Button
+              type="button"
+              onClick={() =>
+                setEditing(true)
+              }
+              disabled={deleting}
+            >
+              Edit
+            </Button>
+
+            <Button
+              type="button"
+              onClick={() =>
+                setDeleteDialogOpen(
+                  true
+                )
+              }
+              loading={deleting}
+              loadingText="Deleting..."
+              className="bg-red-600 hover:bg-red-700"
+            >
+              Delete
+            </Button>
           </div>
         </div>
+      </article>
 
-        <div className="flex gap-2">
-          <Button
-            type="button"
-            onClick={() =>
-              setEditing(true)
-            }
-            disabled={deleting}
-          >
-            Edit
-          </Button>
-
-          <Button
-            type="button"
-            onClick={handleDelete}
-            loading={deleting}
-            loadingText="Deleting..."
-            className="bg-red-600 hover:bg-red-700"
-          >
-            Delete
-          </Button>
-        </div>
-      </div>
-    </article>
+      <Dialog
+        open={deleteDialogOpen}
+        title="Delete note"
+        description="This action cannot be undone."
+        loading={deleting}
+        onConfirm={handleDelete}
+        onCancel={() =>
+          setDeleteDialogOpen(
+            false
+          )
+        }
+      />
+    </>
   );
 }
